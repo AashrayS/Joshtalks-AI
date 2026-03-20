@@ -1,21 +1,36 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isDarkContext, setIsDarkContext] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      
+      // Hide/Show logic
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
       } else {
         setIsVisible(true);
       }
       setLastScrollY(currentScrollY);
+
+      // Adaptive color logic
+      // Check if we are over the dark section
+      const darkSections = document.querySelectorAll('.dark-context');
+      let found = false;
+      darkSections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 50 && rect.bottom >= 50) {
+          found = true;
+        }
+      });
+      setIsDarkContext(found);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -23,7 +38,7 @@ export default function Navbar() {
   }, [lastScrollY]);
 
   return (
-    <nav className={`navbar ${isVisible ? 'visible' : 'hidden'}`}>
+    <nav className={`navbar ${isVisible ? 'visible' : 'hidden'} ${isDarkContext ? 'is-dark-context' : ''}`}>
       <div className="nav-container">
         <Link href="/" className="logo">
           <strong>Estrax</strong>
@@ -47,7 +62,7 @@ export default function Navbar() {
           left: 0;
           width: 100%;
           z-index: 1000;
-          transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s;
+          transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s, color 0.4s;
           padding: 1.5rem 0;
         }
 
@@ -66,10 +81,11 @@ export default function Navbar() {
         }
 
         .logo {
-          font-size: 1.1rem;
+          font-size: 1.15rem;
           color: #000;
           font-weight: 700;
           letter-spacing: -0.03em;
+          transition: color 0.4s;
         }
 
         .nav-links {
@@ -79,6 +95,7 @@ export default function Navbar() {
           font-size: 0.9rem;
           font-weight: 500;
           color: var(--text-secondary);
+          transition: color 0.4s;
         }
 
         .nav-links a:hover {
@@ -92,13 +109,27 @@ export default function Navbar() {
           border: 1px solid var(--border);
           padding: 0.5rem 1.25rem;
           border-radius: 100px;
-          transition: var(--transition);
+          transition: all 0.4s;
         }
 
         .btn-nav:hover {
           background: #000;
           color: #fff;
           border-color: #000;
+        }
+
+        /* Dark Context Styles */
+        .is-dark-context .logo { color: #fff; }
+        .is-dark-context .nav-links { color: rgba(255, 255, 255, 0.6); }
+        .is-dark-context .nav-links a:hover { color: #fff; }
+        .is-dark-context .btn-nav { 
+          color: #fff; 
+          border-color: rgba(255, 255, 255, 0.1); 
+        }
+        .is-dark-context .btn-nav:hover {
+          background: #fff;
+          color: #000;
+          border-color: #fff;
         }
 
         @media (max-width: 768px) {

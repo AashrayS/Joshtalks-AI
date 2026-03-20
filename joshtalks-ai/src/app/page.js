@@ -15,7 +15,7 @@ export default function Home() {
       setTypewriterText(fullText.slice(0, i));
       i++;
       if (i > fullText.length) clearInterval(interval);
-    }, 5000 / fullText.length); // 5 seconds for full text
+    }, 5000 / fullText.length);
     return () => clearInterval(interval);
   }, []);
 
@@ -45,16 +45,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Icon Curve Section (Image 1 inspiraton) */}
-      <section className="icon-curve-section animate-fade-in">
+      {/* Panoramic Icon Curve - DARK Section */}
+      <section className="icon-curve-section dark-context animate-fade-in">
         <div className="icon-curve-container">
           <div className="icon-bubble"><span className="symbol">✓</span></div>
           <div className="icon-bubble"><span className="symbol">⁝</span></div>
           <div className="icon-bubble"><span className="symbol">❏</span></div>
           <div className="icon-bubble"><span className="symbol">⚬</span></div>
+          <div className="icon-bubble"><span className="symbol">⚀</span></div>
           <div className="icon-bubble active"><span className="symbol">立方</span></div>
+          <div className="icon-bubble"><span className="symbol">↺</span></div>
           <div className="icon-bubble"><span className="symbol">↻</span></div>
           <div className="icon-bubble"><span className="symbol">▣</span></div>
+          <div className="icon-bubble"><span className="symbol">▦</span></div>
+          <div className="icon-bubble"><span className="symbol">◰</span></div>
         </div>
         <div className="section-text centered">
           <h2>An AI-First Ecosystem</h2>
@@ -62,7 +66,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Mode Toggle */}
+      {/* Mode Toggle - Light Section */}
       <section className="mode-section container">
         <div className="mode-toggle-wrapper">
           <div className="mode-toggle">
@@ -101,8 +105,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Editor Preview Section (Image 2 inspiration) */}
-      <section className="editor-preview-section container">
+      {/* Editor Preview Section - DARK Section */}
+      <section className="editor-preview-section dark-context">
         <div className="editor-glow-container">
           <div className="glow glow-red"></div>
           <div className="glow glow-blue"></div>
@@ -113,18 +117,19 @@ export default function Home() {
             </div>
             <div className="editor-content">
               <pre>
-                <code>{`// Estrax Data Protocol v1.0
-import { Collector } from "@estrax/core";
-
-export default function DataNode() {
-  const data = Collector.useRegion("Bihar");
-  
-  return (
-    <div className="rounded-md bg-orange-500 p-4">
-      Regional Intelligence Active
-    </div>
-  );
-}`}</code>
+                <code>
+<span className="st-comment">// Estrax Data Protocol v1.0</span>{"\n"}
+<span className="st-import">import</span> <span className="st-bracket">{"{"}</span> <span className="st-prop">Collector</span> <span className="st-bracket">{"}"}</span> <span className="st-import">from</span> <span className="st-string">"@estrax/core"</span>;{"\n\n"}
+<span className="st-keyword">export default function</span> <span className="st-func">DataNode</span><span className="st-bracket">() {"{"}</span>{"\n"}
+{"  "}<span className="st-keyword">const</span> <span className="st-prop">data</span> = <span className="st-prop">Collector</span>.<span className="st-func">useRegion</span><span className="st-bracket">(</span><span className="st-string">"Bihar"</span><span className="st-bracket">)</span>;{"\n"}
+{"  "}
+{"  "}<span className="st-keyword">return</span> <span className="st-bracket">(</span>{"\n"}
+{"    "}<span className="st-bracket">&lt;</span><span className="st-keyword">div</span> <span className="st-prop">className</span>=<span className="st-string">"rounded-md bg-orange-500 p-4"</span><span className="st-bracket">&gt;</span>{"\n"}
+{"      "}Regional Intelligence Active{"\n"}
+{"    "}<span className="st-bracket">&lt;/</span><span className="st-keyword">div</span><span className="st-bracket">&gt;</span>{"\n"}
+{"  "}<span className="st-bracket">)</span>;{"\n"}
+<span className="st-bracket">{"}"}</span>
+                </code>
               </pre>
             </div>
           </div>

@@ -85,16 +85,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* High-Fidelity Editor Preview - DARK Section */}
+      {/* Regional Intelligence Core - DARK Section */}
       <section className="editor-preview-section dark-context">
         <div className="editor-window-container">
           <div className="editor-glow-backdrop"></div>
           <div className="editor-window">
             <aside className="editor-sidebar">
-              <div className="sidebar-icon active">❏</div>
-              <div className="sidebar-icon">⚬</div>
-              <div className="sidebar-icon">▣</div>
-              <div className="sidebar-icon">↺</div>
+              <div className="sidebar-icon active">📊</div>
+              <div className="sidebar-icon">📍</div>
+              <div className="sidebar-icon">🛡️</div>
+              <div className="sidebar-icon">⚙️</div>
             </aside>
             <div className="editor-main">
               <div className="editor-header">
@@ -102,29 +102,30 @@ export default function Home() {
                   <span></span><span></span><span></span>
                 </div>
                 <div className="editor-tabs">
-                  <div className="editor-tab">Implementation_plan.md</div>
-                  <div className="editor-tab active">LoginButton.tsx 1</div>
+                  <div className="editor-tab">metadata_stream.log</div>
+                  <div className="editor-tab active">regional_insight.json</div>
                 </div>
               </div>
               <div className="editor-breadcrumbs">
-                app &gt; components &gt; LoginButton.tsx
+                estax &gt; intelligence &gt; regional_insight.json
               </div>
               <div className="editor-code-row">
                 <div className="line-numbers">
-                  1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />11<br />12
+                  1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />11<br />12<br />13
                 </div>
                 <div className="code-field">
-                  <span className="st-purple">import</span> Link <span className="st-purple">from</span> <span className="st-orange">'next/link'</span>;<br /><br />
-                  <span className="st-purple">export default function</span> <span className="st-pink">LoginButton</span>(): <span className="st-blue">React.ReactElement</span><span className="st-bracket">{"{"}</span><br />
-                  &nbsp;&nbsp;<span className="st-purple">return</span> (<br /><br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;Link<br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;href=<span className="st-orange">"/api/auth/strava/login"</span><br />
+                  <span className="st-bracket">{"{"}</span><br />
+                  &nbsp;&nbsp;<span className="st-pink">"region"</span>: <span className="st-orange">"North Rural Delta"</span>,<br />
+                  &nbsp;&nbsp;<span className="st-pink">"village_id"</span>: <span className="st-orange">"ESTX-77LK"</span>,<br />
+                  &nbsp;&nbsp;<span className="st-pink">"metadata"</span>: <span className="st-bracket">{"{"}</span><br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span className="st-pink">"gps"</span>: <span className="st-orange">"28.6139° N, 77.2090° E"</span>,<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span className="st-pink">"confidence"</span>: <span className="st-blue">0.985</span>,<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span className="st-pink">"validation_status"</span>: <span className="st-orange">"VERIFIED"</span><br />
+                  &nbsp;&nbsp;<span className="st-bracket">{"}"}</span>,<br />
                   <span className="code-line-active">
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;className=<span className="st-orange">"rounded-md bg-orange-500 px-4 py-2 font-semibold"</span>&gt;
-                  </span>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login with Strava<br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/Link&gt;<br />
-                  &nbsp;&nbsp;);<br />
+                  &nbsp;&nbsp;<span className="st-pink">"agent_insight"</span>: <span className="st-orange">"High-fidelity crop data detected. Proceeding to tagging."</span>
+                  </span><br />
+                  &nbsp;&nbsp;<span className="st-pink">"timestamp"</span>: <span className="st-orange">"2026-03-20T17:16:05Z"</span><br />
                   <span className="st-bracket">{"}"}</span>
                 </div>
               </div>
@@ -132,8 +133,8 @@ export default function Home() {
           </div>
         </div>
         <div className="section-text">
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>An AI IDE Core</h2>
-          <p>Estrax's Editor view offers tab autocompletion, natural language code commands, and a configurable, and context-aware configurable agent.</p>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>Regional Data Core</h2>
+          <p>Estrax processes decentralized regional data in real-time. Our agentic pipeline validates ground-truth imagery, tags metadata with high confidence, and generates actionable intelligence for the next generation of AI.</p>
         </div>
       </section>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Navbar() {
@@ -13,15 +13,19 @@ export default function Navbar() {
       const currentScrollY = window.scrollY;
       
       // Hide/Show logic
+      // Only show on scroll-up IF we are near the top (within 200px)
+      // Otherwise, keep it hidden while scrolling down or halfway
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
-      } else {
+      } else if (currentScrollY < lastScrollY && currentScrollY < 200) {
+        setIsVisible(true);
+      } else if (currentScrollY <= 0) {
         setIsVisible(true);
       }
+      
       setLastScrollY(currentScrollY);
 
       // Adaptive color logic
-      // Check if we are over the dark section
       const darkSections = document.querySelectorAll('.dark-context');
       let found = false;
       darkSections.forEach(section => {

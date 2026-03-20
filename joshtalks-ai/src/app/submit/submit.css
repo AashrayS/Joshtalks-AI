@@ -1,28 +1,39 @@
 .header {
   text-align: center;
-  margin-bottom: 4rem;
-  padding-top: 3rem;
+  margin-bottom: 5rem;
+  padding-top: 4rem;
 }
 
 .header h1 {
-  font-size: 2.2rem; /* Scaled down */
+  font-size: 2.2rem;
   font-weight: 700;
   color: #000;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
   letter-spacing: -0.03em;
 }
 
 .header p {
   color: var(--text-secondary);
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.6;
 }
 
 .submission-form .card {
-  max-width: 550px;
-  margin: 0 auto;
-  border-radius: var(--radius-md);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+  max-width: 600px;
+  margin: 0 auto 5rem auto;
+  padding: 3.5rem;
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem; /* Increased spacing */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Vertical stack for label & input */
 }
 
 .form-group label {
@@ -31,42 +42,58 @@
   color: #000;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 0.75rem;
 }
 
 select, textarea {
   background: #fbfbfd;
   border: 1px solid var(--border);
-  padding: 0.85rem 1rem;
-  font-size: 0.95rem;
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  width: 100%;
+}
+
+select:focus, textarea:focus {
+  border-color: #000;
+  outline: none;
 }
 
 /* Upload Options Refined */
+.upload-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
 .upload-btn {
-  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2.5rem 1.5rem;
+  background: #fbfbfd;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.upload-btn:hover {
+  border-color: #000;
+  background: #fff;
 }
 
 .upload-btn .text strong {
+  display: block;
   font-size: 1rem;
-  letter-spacing: -0.01em;
-}
-
-.upload-btn .text span {
-  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+  color: #000;
 }
 
 .submit-btn {
-  padding: 1rem;
-  font-size: 0.95rem;
+  padding: 1.15rem;
+  font-size: 1rem;
   letter-spacing: 0.02em;
-}
-
-.success-badge {
-  font-size: 0.75rem;
-  padding: 0.4rem 1rem;
-}
-
-.success-card h2 {
-  font-size: 1.8rem;
-  letter-spacing: -0.02em;
+  margin-top: 1rem;
 }

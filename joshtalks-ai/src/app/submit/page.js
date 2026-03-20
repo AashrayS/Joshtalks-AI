@@ -160,24 +160,42 @@ export default function SubmitPage() {
           </div>
 
           <div className="form-group upload-section">
-            <label>Upload or Capture Image</label>
-            <div 
-              className={`upload-zone ${preview ? 'has-preview' : ''}`}
-              onClick={() => fileInputRef.current.click()}
-            >
-              {preview ? (
+            <label>Image Submission</label>
+            {preview ? (
+              <div className="preview-container">
                 <img src={preview} alt="Preview" className="image-preview" />
-              ) : (
-                <div className="upload-placeholder">
+                <button type="button" className="btn-remove" onClick={() => { setPreview(null); setImage(null); }}>
+                  Remove & Retake
+                </button>
+              </div>
+            ) : (
+              <div className="upload-options">
+                <button type="button" className="upload-btn camera" onClick={() => {
+                  fileInputRef.current.setAttribute('capture', 'environment');
+                  fileInputRef.current.click();
+                }}>
                   <span className="icon">📷</span>
-                  <p>Tap to upload or take a photo</p>
-                </div>
-              )}
-            </div>
+                  <div className="text">
+                    <strong>Take Photo</strong>
+                    <span>Use your camera</span>
+                  </div>
+                </button>
+                
+                <button type="button" className="upload-btn gallery" onClick={() => {
+                  fileInputRef.current.removeAttribute('capture');
+                  fileInputRef.current.click();
+                }}>
+                  <span className="icon">🖼️</span>
+                  <div className="text">
+                    <strong>Upload</strong>
+                    <span>From your gallery</span>
+                  </div>
+                </button>
+              </div>
+            )}
             <input 
               type="file" 
               accept="image/*" 
-              capture="environment"
               onChange={handleImageChange}
               ref={fileInputRef}
               hidden

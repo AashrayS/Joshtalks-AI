@@ -1,3 +1,4 @@
+import Navbar from "./components/Navbar";
 import "./globals.css";
 
 export const metadata = {
@@ -20,8 +21,10 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body>
-        <main>{children}</main>
+      <body suppressHydrationWarning>
+        <div className="glow-backdrop"></div>
+        <Navbar />
+        <main className="main-content">{children}</main>
       </body>
     </html>
   );

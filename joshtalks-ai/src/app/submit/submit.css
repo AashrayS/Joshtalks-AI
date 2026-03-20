@@ -1,183 +1,125 @@
 .header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+  padding-top: 2rem;
 }
 
 .header h1 {
-  font-size: 2rem;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+  color: #000;
+  margin-bottom: 0.75rem;
 }
 
 .header p {
   color: var(--text-secondary);
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .submission-form .card {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .form-group label {
-  font-weight: 500;
-  font-size: 0.9rem;
+  font-weight: 600;
+  font-size: 0.95rem;
   color: var(--text-primary);
 }
 
 select, textarea {
-  background: var(--bg-accent);
+  background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 0.8rem;
+  padding: 1rem;
   color: var(--text-primary);
   font-size: 1rem;
   transition: var(--transition);
 }
 
 select:focus, textarea:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(66, 133, 244, 0.1);
 }
 
-select:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+/* Upload Options */
+.upload-label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: 600;
 }
 
-textarea {
-  min-height: 100px;
-  resize: vertical;
+.upload-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
 }
 
-.upload-zone {
-  border: 2px dashed var(--border);
+.upload-btn {
+  background: #fbfbfd;
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 2rem;
-  text-align: center;
-  cursor: pointer;
-  transition: var(--transition);
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 16/9;
+  padding: 2.5rem 1.5rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 1rem;
+  transition: var(--transition);
+  color: var(--text-primary);
 }
 
-.upload-zone:hover {
-  border-color: #6366f1;
-  background: rgba(99, 102, 241, 0.05);
+.upload-btn:hover {
+  border-color: var(--primary-color);
+  background: #fff;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(66, 133, 244, 0.08);
 }
 
-.upload-zone.has-preview {
-  border: none;
-  padding: 0;
+.upload-btn .icon {
+  font-size: 2.5rem;
+}
+
+.upload-btn .text strong {
+  font-size: 1.1rem;
+  color: #000;
+}
+
+.upload-btn .text span {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.preview-container {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  background: #fff;
 }
 
 .image-preview {
   width: 100%;
-  height: 100%;
+  border-radius: var(--radius-sm);
+  aspect-ratio: 16/9;
   object-fit: cover;
-  display: block;
 }
 
-.upload-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.upload-placeholder .icon {
-  font-size: 2.5rem;
-}
-
-.upload-placeholder p {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-.submit-btn {
+.btn-remove {
   width: 100%;
-  padding: 1rem;
-  font-size: 1.1rem;
   margin-top: 1rem;
-}
-
-.error-message {
-  color: var(--error);
-  font-size: 0.9rem;
-  background: rgba(239, 68, 68, 0.1);
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fee2e2;
   padding: 0.75rem;
   border-radius: var(--radius-sm);
-  text-align: center;
+  font-weight: 600;
 }
 
-.success-card {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 3rem 2rem;
-}
-
-.success-icon {
-  width: 64px;
-  height: 64px;
-  background: var(--success);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  color: white;
-  margin-bottom: 0.5rem;
-}
-
-.success-card h2 {
-  font-size: 1.8rem;
-}
-
-.success-card p {
-  color: var(--text-secondary);
-  margin-bottom: 1rem;
-}
-
-.spinner {
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: #fff;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.btn-remove:hover {
+  background: #ef4444;
+  color: #fff;
 }
 
 @media (max-width: 600px) {
-  .container {
-    padding: 1rem;
-  }
-  
-  .header h1 {
-    font-size: 1.6rem;
-  }
-  
-  .card {
-    padding: 1rem;
+  .upload-options {
+    grid-template-columns: 1fr;
   }
 }

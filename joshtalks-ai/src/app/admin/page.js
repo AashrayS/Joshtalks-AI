@@ -57,12 +57,15 @@ export default function AdminPage() {
         method: 'POST',
         headers: { 'x-admin-password': password }
       });
+      const result = await response.json();
       if (response.ok) {
         setSelectedSubmission(null);
         fetchSubmissions();
+      } else {
+        alert(`Error: ${result.error || 'Failed to approve'}`);
       }
     } catch (err) {
-      alert('Failed to approve');
+      alert('Network error. Please try again.');
     }
   };
 
@@ -77,14 +80,17 @@ export default function AdminPage() {
         },
         body: JSON.stringify({ reason: rejectionReason })
       });
+      const result = await response.json();
       if (response.ok) {
         setIsRejecting(false);
         setRejectionReason('');
         setSelectedSubmission(null);
         fetchSubmissions();
+      } else {
+        alert(`Error: ${result.error || 'Failed to reject'}`);
       }
     } catch (err) {
-      alert('Failed to reject');
+      alert('Network error. Please try again.');
     }
   };
 
@@ -138,7 +144,7 @@ export default function AdminPage() {
 
       <div className="submissions-grid">
         {submissions.map(sub => (
-          <div key={sub.id} className="card sub-card" onClick={() => setSelectedSubmission(sub)}>
+          <div key={sub.id} className="card sub-card animate-fade-in" onClick={() => setSelectedSubmission(sub)}>
             <div className="sub-image">
               <img src={sub.image_url} alt="Submission" />
               <span className={`status-badge ${sub.status}`}>{sub.status}</span>
@@ -153,8 +159,8 @@ export default function AdminPage() {
       </div>
 
       {selectedSubmission && (
-        <div className="modal-overlay" onClick={() => { setSelectedSubmission(null); setIsRejecting(false); }}>
-          <div className="modal-card" onClick={e => e.stopPropagation()}>
+        <div className="modal-overlay animate-fade-in" onClick={() => { setSelectedSubmission(null); setIsRejecting(false); }}>
+          <div className="modal-card glass-card" onClick={e => e.stopPropagation()}>
             <button className="close-modal" onClick={() => { setSelectedSubmission(null); setIsRejecting(false); }}>×</button>
             <div className="modal-content">
               <div className="modal-image">

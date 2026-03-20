@@ -17,8 +17,6 @@ export default function AdminPage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // In a real app, this would be a server-side check. 
-    // For MVP, we'll fetch one list with the password to verify it.
     fetchSubmissions(password);
   };
 
@@ -96,21 +94,28 @@ export default function AdminPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="container admin-login animate-fade-in">
-        <div className="card login-card">
-          <h1>Admin Dashboard</h1>
-          <p>Please enter your access password</p>
-          <form onSubmit={handleLogin}>
+      <div className="admin-container admin-login animate-fade-in" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="card login-card" style={{ maxWidth: '450px', width: '100%', padding: '4rem' }}>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.05em' }}>Estrax Admin</h1>
+          <p style={{ color: '#666', marginBottom: '2.5rem' }}>Secure access for regional intelligence management.</p>
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <input 
               type="password" 
-              placeholder="Password" 
+              placeholder="Admin Password" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              style={{
+                padding: '1rem 1.5rem',
+                borderRadius: '100px',
+                border: '1px solid #eee',
+                fontSize: '1rem',
+                backgroundColor: '#f9f9f9'
+              }}
             />
-            {error && <p className="error-text">{error}</p>}
-            <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? 'Verifying...' : 'Access Dashboard'}
+            {error && <p className="error-text" style={{ color: '#ea4335', fontSize: '0.9rem' }}>{error}</p>}
+            <button type="submit" className="btn-primary" disabled={loading} style={{ padding: '1.1rem' }}>
+              {loading ? 'Authenticating...' : 'Enter Dashboard'}
             </button>
           </form>
         </div>
@@ -122,82 +127,130 @@ export default function AdminPage() {
     <div className="admin-container animate-fade-in">
       <header className="admin-header">
         <div className="branding">
-          <h1>Admin Dashboard</h1>
-          <span>{submissions.length} Submissions</span>
+          <h1>Admin Console</h1>
+          <span className="brand-badge">{submissions.length} Data Points</span>
         </div>
         <div className="admin-filters">
           <select value={filters.status} onChange={(e) => setFilters({...filters, status: e.target.value})}>
-            <option value="">All Status</option>
-            <option value="pending">Pending</option>
-            <option value="approved">Approved</option>
+            <option value="">Status: All</option>
+            <option value="pending">Pending Review</option>
+            <option value="approved">Verified</option>
             <option value="rejected">Rejected</option>
           </select>
           <select value={filters.state} onChange={(e) => setFilters({...filters, state: e.target.value, district: ''})}>
-            <option value="">All States</option>
-            {Object.keys(statesData).map(s => <option key={s} value={s}>{s}</option>)}
+            <option value="">Region: All India</option>
+            {Object.keys(statesData).sort().map(s => <option key={s} value={s}>{s}</option>)}
           </select>
           <button className="btn-logout" onClick={() => setIsAuthenticated(false)}>Logout</button>
         </div>
       </header>
 
-      {loading && <div className="loading-state">Updating data...</div>}
+      {loading && <div className="loading-state" style={{ marginBottom: '2rem', color: '#666', fontStyle: 'italic' }}>Syncing regional data...</div>}
 
       <div className="submissions-grid">
         {submissions.map(sub => (
-          <div key={sub.id} className="card sub-card animate-fade-in" onClick={() => setSelectedSubmission(sub)}>
-            <div className="sub-image">
+          <div key={sub.id} className="card sub-card animate-fade-in">
+            <div className="sub-image" onClick={() => setSelectedSubmission(sub)}>
               <img src={sub.image_url} alt="Submission" />
-              <span className={`status-badge ${sub.status}`}>{sub.status}</span>
+              <span className={`status-badge ${sub.status}`}>
+                 {sub.status === 'pending' ? 'Review Needed' : sub.status}
+              </span>
             </div>
             <div className="sub-info">
-              <h3>{sub.district}, {sub.state}</h3>
-              <p className="description-preview">{sub.description.substring(0, 100)}...</p>
-              <span className="timestamp">{new Date(sub.created_at).toLocaleDateString()}</span>
+              <div onClick={() => setSelectedSubmission(sub)} style={{ cursor: 'pointer' }}>
+                <h3>{sub.district}, {sub.state}</h3>
+                <p className="description-preview">{sub.description}</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+                  <span className="timestamp">{new Date(sub.created_at).toLocaleDateString()}</span>
+                  <span style={{ fontSize: '0.8rem', color: '#000', fontWeight: '700' }}>Review Details →</span>
+                </div>
+              </div>
+              
+              {sub.status === 'pending' && (
+                <div className="quick-actions" style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid #eee' }}>
+                  <button 
+                    className="btn-approve" 
+                    onClick={(e) => { e.stopPropagation(); handleApprove(sub.id); }}
+                    style={{ padding: '0.6rem', fontSize: '0.8rem' }}
+                  >
+                    Quick Verify
+                  </button>
+                  <button 
+                    className="btn-reject" 
+                    onClick={(e) => { e.stopPropagation(); setSelectedSubmission(sub); setIsRejecting(true); }}
+                    style={{ padding: '0.6rem', fontSize: '0.8rem' }}
+                  >
+                    Quick Reject
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         ))}
       </div>
 
+      {submissions.length === 0 && !loading && (
+        <div style={{ textAlign: 'center', padding: '10rem 0', color: '#888' }}>
+          <h2>No regional data found for this filter.</h2>
+          <p>Try broadening your search or check again later.</p>
+        </div>
+      )}
+
       {selectedSubmission && (
         <div className="modal-overlay animate-fade-in" onClick={() => { setSelectedSubmission(null); setIsRejecting(false); }}>
-          <div className="modal-card glass-card" onClick={e => e.stopPropagation()}>
+          <div className="modal-card" onClick={e => e.stopPropagation()}>
             <button className="close-modal" onClick={() => { setSelectedSubmission(null); setIsRejecting(false); }}>×</button>
             <div className="modal-content">
               <div className="modal-image">
                 <img src={selectedSubmission.image_url} alt="Full view" />
               </div>
               <div className="modal-details">
-                <span className={`status-badge ${selectedSubmission.status}`}>{selectedSubmission.status}</span>
-                <h2>{selectedSubmission.district}, {selectedSubmission.state}</h2>
-                <div className="metadata-row">
-                  <span>GPS: {selectedSubmission.gps_lat || 'N/A'}, {selectedSubmission.gps_lng || 'N/A'}</span>
-                  <span>Date: {new Date(selectedSubmission.created_at).toLocaleString()}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className={`status-badge ${selectedSubmission.status}`} style={{ position: 'static' }}>
+                    {selectedSubmission.status}
+                  </span>
+                  <span className="timestamp">ID: {selectedSubmission.id.substring(0, 8)}</span>
                 </div>
+                
+                <h2>{selectedSubmission.district}, {selectedSubmission.state}</h2>
+                
+                <div className="metadata-row">
+                  <span>📍 GPS: {selectedSubmission.gps_lat || 'N/A'}, {selectedSubmission.gps_lng || 'N/A'}</span>
+                  <span>🗓️ Captured: {new Date(selectedSubmission.created_at).toLocaleString()}</span>
+                  <span>🔍 Data Type: Ground-Truth Imagery</span>
+                </div>
+
                 <p className="full-description">{selectedSubmission.description}</p>
                 
                 {selectedSubmission.status === 'rejected' && (
                   <div className="rejection-info">
-                    <strong>Rejection Reason:</strong>
+                    <strong>Rejection Logic Applied:</strong>
                     <p>{selectedSubmission.rejection_reason}</p>
                   </div>
                 )}
 
-                {selectedSubmission.status === 'pending' && !isRejecting && (
+                {!isRejecting && (
                   <div className="admin-actions">
-                    <button className="btn-approve" onClick={() => handleApprove(selectedSubmission.id)}>Approve</button>
-                    <button className="btn-reject" onClick={() => setIsRejecting(true)}>Reject</button>
+                    {selectedSubmission.status !== 'approved' && (
+                      <button className="btn-approve" onClick={() => handleApprove(selectedSubmission.id)}>
+                        {selectedSubmission.status === 'pending' ? 'Verify & Approve' : 'Re-Approve'}
+                      </button>
+                    )}
+                    <button className="btn-reject" onClick={() => setIsRejecting(true)}>
+                      {selectedSubmission.status === 'pending' ? 'Reject' : 'Change to Rejected'}
+                    </button>
                   </div>
                 )}
 
                 {isRejecting && (
                   <div className="rejection-form animate-fade-in">
                     <textarea 
-                      placeholder="Reason for rejection..."
+                      placeholder="Specify the reason for data invalidation..."
                       value={rejectionReason}
                       onChange={(e) => setRejectionReason(e.target.value)}
                     />
                     <div className="admin-actions">
-                      <button className="btn-reject" onClick={() => handleReject(selectedSubmission.id)}>Confirm Reject</button>
+                      <button className="btn-reject" onClick={() => handleReject(selectedSubmission.id)}>Confirm Invalidation</button>
                       <button className="btn-cancel" onClick={() => setIsRejecting(false)}>Cancel</button>
                     </div>
                   </div>

@@ -10,7 +10,7 @@
 
 /* Hero Section */
 .hero {
-  min-height: 100vh; /* Controlled by 100vh sectioning */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +20,7 @@
 }
 
 .brand-badge {
-  font-size: 0.8rem; /* Scaled down */
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-secondary);
   background: var(--bg-accent);
@@ -31,7 +31,7 @@
 }
 
 .typewriter-h1 {
-  font-size: clamp(2.5rem, 6vw, 4.5rem); /* Scaled down significantly */
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.05em;
@@ -40,7 +40,7 @@
 }
 
 .hero-subtext {
-  font-size: 1.15rem; /* Scaled down */
+  font-size: 1.15rem;
   color: var(--text-secondary);
   line-height: 1.7;
   margin: 1.5rem 0 3rem;
@@ -114,75 +114,65 @@
 }
 
 .section-text.centered h2 {
-  color: #fff;
+  color: #111;
   font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  letter-spacing: -0.04em;
+}
+
+.dark-context .section-text.centered h2 {
+  color: #fff;
 }
 
 .section-text.centered p {
   color: #888;
 }
 
-/* Mode Section - Fullscreen */
+/* Mode Section - Direct Join Layout */
 .mode-section {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6rem; /* Increased gap from 4rem */
+  gap: 5rem;
+  text-align: center;
 }
 
-.mode-toggle-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
+.mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  max-width: 1100px;
+  width: 100%;
 }
-
-.mode-toggle {
-  background: #f1f1f4;
-  padding: 0.35rem;
-  border-radius: 100px;
-  display: flex;
-  position: relative;
-  width: 260px;
-  border: 1px solid rgba(0,0,0,0.05);
-}
-
-.mode-toggle button {
-  flex: 1;
-  padding: 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #888; /* Inactive color */
-  z-index: 2;
-  transition: var(--transition);
-}
-
-.mode-toggle button.active {
-  color: #fff; /* Active color on black slider */
-}
-
-.mode-slider {
-  position: absolute;
-  top: 0.35rem;
-  left: 0.35rem;
-  width: calc(50% - 0.35rem);
-  height: calc(100% - 0.7rem);
-  background: #000;
-  border-radius: 100px;
-  transition: var(--transition);
-  z-index: 1;
-}
-
-.mode-slider.admin { transform: translateX(100%); }
 
 .mode-card {
-  max-width: 850px;
-  margin: 0 auto;
-  border: none;
-  padding: 5rem; /* Increased padding */
+  padding: 4rem 3rem;
   text-align: center;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  transition: var(--transition);
+}
+
+.mode-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.06);
+}
+
+.mode-card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000;
+}
+
+.mode-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 /* Editor Preview Section - Fullscreen Dark */
@@ -197,7 +187,6 @@
   color: #fff;
 }
 
-/* High-Fidelity Editor Mockup (Light Mode Window) */
 .editor-window-container {
   position: relative;
   width: 100%;
@@ -227,7 +216,6 @@
   z-index: -1;
 }
 
-/* Sidebar */
 .editor-sidebar {
   width: 50px;
   background: #f8f8f9;
@@ -250,7 +238,6 @@
   color: #4285f4;
 }
 
-/* Main Editor Area */
 .editor-main {
   flex: 1;
   display: flex;
@@ -309,7 +296,6 @@
   background: #4285f4;
 }
 
-/* Breadcrumbs */
 .editor-breadcrumbs {
   background: #ffffff;
   padding: 0.75rem 1.5rem;
@@ -318,7 +304,6 @@
   border-bottom: 1px solid #f8f8f9;
 }
 
-/* Code Content Area */
 .editor-code-row {
   display: flex;
   padding: 1rem 0;
@@ -340,11 +325,11 @@
   flex: 1;
 }
 
-/* Specific High-Fidelity Highlighting */
-.st-purple { color: #a45ad3; } /* import, export, return */
-.st-pink { color: #d35a8f; }   /* function names */
-.st-orange { color: #e76c3c; } /* strings */
-.st-blue { color: #4285f4; }   /* types */
+/* Syntax Highlighting */
+.st-purple { color: #a45ad3; }
+.st-pink { color: #d35a8f; }
+.st-orange { color: #e76c3c; }
+.st-blue { color: #4285f4; }
 .st-comment { color: #b0b1b5; font-style: italic; }
 
 .code-line-active {
@@ -390,13 +375,15 @@
   }
 
   .icon-curve-container {
-    padding: 0 1rem;
+    padding: 0 2rem;
     overflow-x: auto;
-    justify-content: flex-start;
-    gap: 1.5rem;
-    -webkit-overflow-scrolling: touch;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 2rem;
     scrollbar-width: none;
     margin-bottom: 4rem;
+    -webkit-overflow-scrolling: touch;
   }
   
   .icon-curve-container::-webkit-scrollbar { display: none; }
@@ -406,9 +393,9 @@
   }
 
   .icon-bubble {
-    flex-shrink: 0;
-    width: 48px;
-    height: 48px;
+    flex-shrink: 0 !important;
+    width: 60px !important;
+    height: 60px !important;
   }
 
   .section-text.centered h2 {
@@ -421,17 +408,13 @@
     gap: 3rem;
   }
 
-  .mode-toggle {
-    width: 240px;
+  .mode-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .mode-card {
-    padding: 2.5rem 1.5rem;
-    width: 100%;
-  }
-
-  .mode-card h2 {
-    font-size: 1.5rem;
+    padding: 3rem 2rem;
   }
 
   .editor-preview-section {

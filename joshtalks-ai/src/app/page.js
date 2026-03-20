@@ -5,7 +5,6 @@ import Link from 'next/link';
 import './home.css';
 
 export default function Home() {
-  const [activeMode, setActiveMode] = useState('contributor');
   const [typewriterText, setTypewriterText] = useState('');
   const fullText = "Experience liftoff with India's Next-Gen Data";
 
@@ -65,45 +64,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Mode Toggle - Light Section */}
+      {/* Mode Section - Direct Join */}
       <section className="mode-section container">
         <div className="section-text centered">
-          <h2 style={{ fontSize: '2.2rem', marginBottom: '3rem' }}>The Future of Collection</h2>
+          <h2>The Future of Collection</h2>
         </div>
         
-        <div className="mode-toggle-wrapper">
-          <div className="mode-toggle">
-            <button 
-              className={activeMode === 'contributor' ? 'active' : ''} 
-              onClick={() => setActiveMode('contributor')}
-            >
-              Contributor
-            </button>
-            <button 
-              className={activeMode === 'admin' ? 'active' : ''} 
-              onClick={() => setActiveMode('admin')}
-            >
-              Admin
-            </button>
-            <div className={`mode-slider ${activeMode}`}></div>
+        <div className="mode-grid animate-fade-in">
+          <div className="mode-card glass-card">
+            <h3>Contributor</h3>
+            <p>Join the rural data revolution. Bridge the AI gap by contributing high-quality regional imagery.</p>
+            <Link href="/submit" className="btn-primary">Start Contributing</Link>
           </div>
-        </div>
 
-        <div className="mode-display animate-fade-in" key={activeMode}>
-          <div className="card mode-card glass-card">
-            {activeMode === 'contributor' ? (
-              <div className="mode-content">
-                <h2>Join the rural data revolution</h2>
-                <p>Help us bridge the regional AI gap by contributing high-quality imagery from your village.</p>
-                <Link href="/submit" className="btn-primary">Get Started</Link>
-              </div>
-            ) : (
-              <div className="mode-content">
-                <h2>Validation at scale</h2>
-                <p>Review and validate ground-truth data with our advanced administrative dashboard.</p>
-                <Link href="/admin" className="btn-primary">Open Dashboard</Link>
-              </div>
-            )}
+          <div className="mode-card glass-card">
+            <h3>Administrator</h3>
+            <p>Validation at scale. Review and validate ground-truth data with our advanced dashboard.</p>
+            <Link href="/admin" className="btn-primary">Open Dashboard</Link>
           </div>
         </div>
       </section>

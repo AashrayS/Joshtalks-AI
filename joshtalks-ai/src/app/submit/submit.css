@@ -134,13 +134,34 @@ select, textarea { width: 100% !important; background: #fbfbfd; border: 1px soli
 @media (max-width: 768px) {
   .submission-form .card { padding: 2.5rem 1.5rem; }
   
+  .container {
+    padding-bottom: 8rem !important; /* Space for floating badge */
+  }
+
   .workspace-badge {
-    bottom: auto;
-    top: 5.5rem; /* Below Navbar */
+    bottom: 1.5rem;
     right: 1.5rem;
-    padding: 0.8rem 1.5rem;
-    font-size: 0.7rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    top: auto;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  .workspace-badge::after {
+    content: 'Storage';
+    position: absolute;
+    top: -25px;
+    right: 0;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 800;
   }
 } /* End mobile media query */
 } /* End .submit-page-root */

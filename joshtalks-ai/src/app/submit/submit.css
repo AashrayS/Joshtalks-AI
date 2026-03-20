@@ -21,15 +21,24 @@
 .submission-form .card {
   max-width: 650px;
   margin: 0 auto 6rem auto;
-  padding: 4rem; /* Increased padding */
+  padding: 4rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .form-group {
   display: flex !important;
   flex-direction: column !important;
-  gap: 1rem !important; /* Forced vertical layout */
+  gap: 1rem !important;
   margin-bottom: 2.5rem;
 }
+
+.form-group:last-child { margin-bottom: 0; }
 
 .form-group label {
   font-weight: 700;
@@ -37,8 +46,6 @@
   color: #000;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  display: block;
-  margin-bottom: 0.25rem;
 }
 
 select, textarea {
@@ -48,11 +55,93 @@ select, textarea {
   padding: 1.15rem;
   font-size: 1rem;
   border-radius: 10px;
+  transition: var(--transition);
 }
 
 select:focus, textarea:focus {
   border-color: #000;
   outline: none;
+  background: #fff;
+}
+
+/* GPS Indicator */
+.gps-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.4rem 0.8rem;
+  background: #f1f3f6;
+  border-radius: 100px;
+}
+
+.gps-indicator.searching { color: #666; }
+.gps-indicator.locked { color: #27ae60; background: rgba(39, 174, 96, 0.1); }
+.gps-indicator.error { color: #ea4335; background: rgba(234, 67, 53, 0.1); }
+
+.gps-indicator .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.gps-indicator.searching .dot {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.3; transform: scale(0.8); }
+}
+
+/* Protocol Section */
+.protocol-section {
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  padding: 2.5rem;
+  background: #f8f9fb;
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.protocol-section label:first-child {
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.protocol-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.protocol-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  border: 1px solid #eee;
+  transition: var(--transition);
+}
+
+.protocol-item:hover { border-color: #ddd; }
+.protocol-item.checked { border-color: #000; color: #000; }
+
+.protocol-item input {
+  accent-color: #000;
+  width: 18px;
+  height: 18px;
 }
 
 /* Upload Options Refined */
@@ -66,23 +155,19 @@ select:focus, textarea:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem; /* Space between Photo icon/text and secondary text */
+  gap: 0.75rem;
   padding: 2.5rem 1.5rem;
   background: #fbfbfd;
   border: 1px dashed var(--border);
   border-radius: 14px;
   text-align: center;
+  transition: var(--transition);
 }
 
 .upload-btn:hover {
   border-color: #000;
   background: #fff;
-}
-
-.upload-btn .text {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem; /* Specific gap to prevent button text mixing */
+  transform: translateY(-2px);
 }
 
 .upload-btn .text strong {
@@ -101,7 +186,14 @@ select:focus, textarea:focus {
   padding: 1.25rem;
   font-size: 1.1rem;
   font-weight: 700;
-  margin-top: 1rem;
+  transition: var(--transition);
+}
+
+.submit-btn.disabled {
+  background: #eee;
+  color: #aaa;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .error-message {
@@ -111,35 +203,14 @@ select:focus, textarea:focus {
   border-radius: 8px;
   font-size: 0.9rem;
   margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 /* Mobile Responsive Submit */
 @media (max-width: 768px) {
-  .header {
-    padding: 4rem 1.5rem 0 1.5rem;
-    margin-bottom: 3rem;
-  }
-
-  .header h1 {
-    font-size: 1.8rem;
-  }
-
-  .submission-form .card {
-    padding: 2rem 1.5rem;
-    margin: 0 1rem 4rem 1rem;
-  }
-
-  .upload-options {
-    grid-template-columns: 1fr; /* Stack vertically on mobile */
-    gap: 1rem;
-  }
-
-  .upload-btn {
-    padding: 2rem 1rem;
-  }
-
-  .submit-btn {
-    padding: 1rem;
-    font-size: 1rem;
-  }
+  .header { padding: 4rem 1.5rem 0 1.5rem; margin-bottom: 3rem; }
+  .form-row { grid-template-columns: 1fr; gap: 0; }
+  .submission-form .card { padding: 2.5rem 1.5rem; margin: 0 1rem 4rem 1rem; }
+  .upload-options { grid-template-columns: 1fr; gap: 1rem; }
+  .protocol-section { padding: 2rem 1.5rem; }
 }

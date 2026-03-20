@@ -18,11 +18,21 @@ export default function SubmitPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
   
+  // Phase 3 States
+  const [gpsStatus, setGpsStatus] = useState('searching'); // 'searching', 'locked', 'error'
+  const [protocol, setProtocol] = useState({
+    clarity: false,
+    privacy: false,
+    location: false,
+    terms: false
+  });
+  
   const fileInputRef = useRef(null);
 
   // Auto-capture GPS
   useEffect(() => {
     if ("geolocation" in navigator) {
+      setGpsStatus('searching');
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setFormData(prev => ({
@@ -30,11 +40,16 @@ export default function SubmitPage() {
             gps_lat: position.coords.latitude,
             gps_lng: position.coords.longitude
           }));
+          setGpsStatus('locked');
         },
         (error) => {
           console.warn("GPS error:", error.message);
-        }
+          setGpsStatus('error');
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
       );
+    } else {
+      setGpsStatus('error');
     }
   }, []);
 
@@ -52,10 +67,17 @@ export default function SubmitPage() {
     }
   };
 
+  const isProtocolComplete = protocol.clarity && protocol.privacy && protocol.location && protocol.terms;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!image || !formData.state || !formData.district || formData.description.length < 10) {
-      setError('Please fill all fields and provide a detailed description (min 10 chars).');
+      setError('Please fill all fields and provide a detailed description.');
+      return;
+    }
+
+    if (!isProtocolComplete) {
+      setError('Please verify all protocol items before submitting.');
       return;
     }
 
@@ -95,7 +117,7 @@ export default function SubmitPage() {
         <div className="card success-card">
           <div className="success-badge">SUCCESS</div>
           <h2>Submission Received</h2>
-          <p>Thank you for contributing. Your submission is now pending review.</p>
+          <p>Thank you for contributing to the Estrax regional intelligence core.</p>
           <button 
             className="btn-primary" 
             onClick={() => {
@@ -103,9 +125,10 @@ export default function SubmitPage() {
               setFormData({ state: '', district: '', description: '', gps_lat: null, gps_lng: null });
               setImage(null);
               setPreview(null);
+              setProtocol({ clarity: false, privacy: false, location: false, terms: false });
             }}
           >
-            Submit Another
+            Submit Another Data Point
           </button>
         </div>
       </div>
@@ -123,35 +146,37 @@ export default function SubmitPage() {
 
       <form onSubmit={handleSubmit} className="submission-form">
         <div className="card">
-          <div className="form-group">
-            <label>Select State</label>
-            <select value={formData.state} onChange={handleStateChange} required>
-              <option value="">-- Choose State --</option>
-              {Object.keys(statesData).map(state => (
-                <option key={state} value={state}>{state}</option>
-              ))}
-            </select>
-          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Select State</label>
+              <select value={formData.state} onChange={handleStateChange} required>
+                <option value="">-- Choose State --</option>
+                {Object.keys(statesData).map(state => (
+                  <option key={state} value={state}>{state}</option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label>Select District</label>
-            <select 
-              value={formData.district} 
-              onChange={(e) => setFormData({...formData, district: e.target.value})} 
-              disabled={!formData.state}
-              required
-            >
-              <option value="">-- Choose District --</option>
-              {districts.map(district => (
-                <option key={district} value={district}>{district}</option>
-              ))}
-            </select>
+            <div className="form-group">
+              <label>Select District</label>
+              <select 
+                value={formData.district} 
+                onChange={(e) => setFormData({...formData, district: e.target.value})} 
+                disabled={!formData.state}
+                required
+              >
+                <option value="">-- Choose District --</option>
+                {districts.map(district => (
+                  <option key={district} value={district}>{district}</option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="form-group">
             <label>Description</label>
             <textarea 
-              placeholder="Describe the image (village name, activity, landmarks...)"
+              placeholder="Describe the image (village name, landmarks, regional context...)"
               value={formData.description}
               onChange={(e) => setFormData({...formData, description: e.target.value})}
               required
@@ -160,7 +185,14 @@ export default function SubmitPage() {
           </div>
 
           <div className="form-group upload-section">
-            <label>Image Submission</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <label style={{ marginBottom: 0 }}>Image Submission</label>
+              <div className={`gps-indicator ${gpsStatus}`}>
+                <span className="dot"></span>
+                {gpsStatus === 'searching' ? 'Locking Location...' : gpsStatus === 'locked' ? 'GPS Locked' : 'GPS Offline'}
+              </div>
+            </div>
+            
             {preview ? (
               <div className="preview-container">
                 <img src={preview} alt="Preview" className="image-preview" />
@@ -200,13 +232,40 @@ export default function SubmitPage() {
             />
           </div>
 
+          {/* Data Integrity Protocol */}
+          <div className="protocol-section">
+            <label>Data Integrity Protocol</label>
+            <div className="protocol-items">
+              <label className={`protocol-item ${protocol.clarity ? 'checked' : ''}`}>
+                <input type="checkbox" checked={protocol.clarity} onChange={() => setProtocol({...protocol, clarity: !protocol.clarity})} />
+                I confirm the image is clear and sharp.
+              </label>
+              <label className={`protocol-item ${protocol.privacy ? 'checked' : ''}`}>
+                <input type="checkbox" checked={protocol.privacy} onChange={() => setProtocol({...protocol, privacy: !protocol.privacy})} />
+                I confirm no faces or private details are visible.
+              </label>
+              <label className={`protocol-item ${protocol.location ? 'checked' : ''}`}>
+                <input type="checkbox" checked={protocol.location} onChange={() => setProtocol({...protocol, location: !protocol.location})} />
+                I confirm I am physically in the selected district.
+              </label>
+              <label className={`protocol-item ${protocol.terms ? 'checked' : ''}`}>
+                <input type="checkbox" checked={protocol.terms} onChange={() => setProtocol({...protocol, terms: !protocol.terms})} />
+                I agree to the data research usage terms.
+              </label>
+            </div>
+          </div>
+
           {error && <div className="error-message">{error}</div>}
 
-          <button type="submit" className="btn-primary submit-btn" disabled={isSubmitting}>
+          <button 
+            type="submit" 
+            className={`btn-primary submit-btn ${!isProtocolComplete ? 'disabled' : ''}`} 
+            disabled={isSubmitting || !isProtocolComplete}
+          >
             {isSubmitting ? (
               <span className="spinner"></span>
             ) : (
-              'Submit Data'
+              'Verify & Submit Data'
             )}
           </button>
         </div>

@@ -34,6 +34,9 @@ export default function SubmitPage() {
   const [drafts, setDrafts] = useState([]);
   const [showWorkspace, setShowWorkspace] = useState(false);
   
+  // Phase 7: Location Guard States
+  const [locationVerified, setLocationVerified] = useState(false);
+  
   // Phase 6.1: Motivation States
   const [stats, setStats] = useState({ total_subs: 0, district_subs: 0 });
   const [unlockedBadges, setUnlockedBadges] = useState([]);
@@ -48,7 +51,8 @@ export default function SubmitPage() {
     clarity: false,
     privacy: false,
     location: false,
-    terms: false
+    terms: false,
+    gpsMatch: false // Phase 7
   });
   
   const fileInputRef = useRef(null);
@@ -78,13 +82,14 @@ export default function SubmitPage() {
 
   const loadMotivationStats = () => {
     const total = parseInt(localStorage.getItem('estrax_subs') || '0');
-    setStats({ total_subs: total, district_subs: Math.floor(total * 0.4) }); // Mock district stats
+    setStats({ total_subs: total, district_subs: Math.floor(total * 0.4) });
     setUnlockedBadges(BADGES.filter(b => total >= b.min));
   };
 
   const calculateRichness = (text) => {
     if (!text) return 0;
     let score = Math.min(text.length, 100) / 2;
+    if (gpsStatus === 'locked') score += 10; // GPS Bonus
     const keywords = ['near', 'across', 'beside', 'village', 'road', 'construction', 'building', 'school', 'hospital', 'market', 'farm'];
     keywords.forEach(word => { if (text.toLowerCase().includes(word)) score += 5; });
     return Math.min(score, 100);
@@ -92,7 +97,7 @@ export default function SubmitPage() {
 
   useEffect(() => {
     setRichness(calculateRichness(formData.description));
-  }, [formData.description]);
+  }, [formData.description, gpsStatus]);
 
   const loadDrafts = async () => {
     try {
@@ -103,7 +108,7 @@ export default function SubmitPage() {
     }
   };
 
-  const isProtocolComplete = protocol.clarity && protocol.privacy && protocol.location && protocol.terms;
+  const isProtocolComplete = protocol.clarity && protocol.privacy && protocol.location && protocol.terms && protocol.gpsMatch;
 
   const handleSubmit = async (e, draftData = null) => {
     if (e) e.preventDefault();
@@ -115,7 +120,7 @@ export default function SubmitPage() {
     }
 
     if (!isProtocolComplete && !draftData) {
-      setError('Complete the Integrity Protocol.');
+      setError('Complete the 5-point Integrity Protocol.');
       return;
     }
 
@@ -148,7 +153,7 @@ export default function SubmitPage() {
       if (!draftData) {
         await saveDraft({ ...formData, image, preview });
         loadDrafts();
-        setError('Network Weak. Saved to Storage.');
+        setError('Network Weak. Saved to Local Workspace.');
       } else {
         setError(`Sync failed: ${err.message}`);
       }
@@ -162,9 +167,9 @@ export default function SubmitPage() {
       <div className="container animate-fade-in">
         <div className="card success-card">
           <div className="celebration-icon">🏆</div>
-          <h2>Regional Insight Captured</h2>
-          <p>Your contribution is helping map the intelligence of {formData.district}.</p>
-          <div className="impact-toast">You've unlocked <strong>+{richness} Fidelity Points</strong>!</div>
+          <h2>Submission Confirmed</h2>
+          <p>Territory knowledge for {formData.district} has been updated.</p>
+          <div className="impact-toast"><strong>+{richness} Fidelity Points</strong> Earned!</div>
           <button 
             className="btn-primary" 
             onClick={() => {
@@ -172,10 +177,11 @@ export default function SubmitPage() {
               setFormData({ state: '', district: '', description: '', gps_lat: null, gps_lng: null });
               setImage(null);
               setPreview(null);
-              setProtocol({ clarity: false, privacy: false, location: false, terms: false });
+              setProtocol({ clarity: false, privacy: false, location: false, terms: false, gpsMatch: false });
+              setLocationVerified(false);
             }}
           >
-            Submit Another Milestone
+            Capture Next Insight
           </button>
         </div>
       </div>
@@ -185,22 +191,22 @@ export default function SubmitPage() {
   return (
     <div className="container animate-fade-in">
       <div className="header">
-        <h1>{formData.district ? `Mapping ${formData.district}` : 'Estrax Collection'}</h1>
-        <p>Architecting the future of regional intelligence.</p>
+        <h1>{formData.district ? `Mapping ${formData.district}` : 'Regional Collection'}</h1>
+        <p>Providing high-fidelity data for Bharat-AI intelligence.</p>
       </div>
 
       <div className="scout-dashboard">
         <div className="stat-card impact">
-          <label>Your Impact</label>
+          <label>Global Impact</label>
           <div className="val">{stats.total_subs} Insights</div>
         </div>
         <div className="stat-card rank">
-          <label>Territory Rank</label>
+          <label>Scout Rank</label>
           <div className="val">#{Math.max(1, 150 - stats.total_subs * 10)} in {formData.district || 'State'}</div>
         </div>
         <div className="badges-row">
           {BADGES.map(badge => (
-            <div key={badge.id} className={`badge-chip ${unlockedBadges.find(b => b.id === badge.id) ? 'active' : 'locked'}`} title={badge.name}>
+            <div key={badge.id} className={`badge-chip ${unlockedBadges.find(b => b.id === badge.id) ? 'active' : 'locked'}`}>
               <span className="icon">{badge.icon}</span>
               <span className="name">{badge.name}</span>
             </div>
@@ -210,7 +216,6 @@ export default function SubmitPage() {
 
       <form onSubmit={handleSubmit} className="submission-form">
         <div className="card">
-          {/* Form Content */}
           <div className="form-row">
             <div className="form-group">
               <label>State</label>
@@ -221,12 +226,42 @@ export default function SubmitPage() {
             </div>
             <div className="form-group">
               <label>District</label>
-              <select value={formData.district} onChange={(e) => setFormData({...formData, district: e.target.value})} disabled={!formData.state} required>
-                <option value="">-- Select --</option>
-                {(statesData[formData.state] || []).map(d => <option key={d} value={d}>{d}</option>)}
-              </select>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <select 
+                  value={formData.district} 
+                  onChange={(e) => {
+                    setFormData({...formData, district: e.target.value});
+                    setLocationVerified(false);
+                  }} 
+                  disabled={!formData.state} 
+                  style={{ flex: 1 }}
+                  required
+                >
+                  <option value="">-- Select --</option>
+                  {(statesData[formData.state] || []).map(d => <option key={d} value={d}>{d}</option>)}
+                </select>
+                {formData.district && gpsStatus === 'locked' && (
+                  <button 
+                    type="button" 
+                    className={`btn-verify ${locationVerified ? 'verified' : ''}`}
+                    onClick={() => setLocationVerified(true)}
+                    title="Verify current location matches selection"
+                  >
+                    {locationVerified ? '✓' : '📍'}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
+
+          {locationVerified && (
+            <div className="location-info animate-fade-in">
+              <p>📍 Location Locked: <code>{formData.gps_lat?.toFixed(4)}, {formData.gps_lng?.toFixed(4)}</code></p>
+              <a href={`https://www.google.com/maps?q=${formData.gps_lat},${formData.gps_lng}`} target="_blank" rel="noopener noreferrer" className="maps-link">
+                View on Satellite Map →
+              </a>
+            </div>
+          )}
 
           <div className="form-group">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
@@ -259,11 +294,12 @@ export default function SubmitPage() {
           </div>
 
           <div className="protocol-section">
-            <label>Integrity Protocol</label>
+            <label>Integrity Protocol (5-Point Check)</label>
             <div className="protocol-items">
               <label className={`protocol-item ${protocol.clarity ? 'checked' : ''}`}><input type="checkbox" checked={protocol.clarity} onChange={() => setProtocol({...protocol, clarity: !protocol.clarity})} /> Image Clarity Verified</label>
-              <label className={`protocol-item ${protocol.privacy ? 'checked' : ''}`}><input type="checkbox" checked={protocol.privacy} onChange={() => setProtocol({...protocol, privacy: !protocol.privacy})} /> Privacy Safeguards Met</label>
-              <label className={`protocol-item ${protocol.location ? 'checked' : ''}`}><input type="checkbox" checked={protocol.location} onChange={() => setProtocol({...protocol, location: !protocol.location})} /> Regional Authenticity Verified</label>
+              <label className={`protocol-item ${protocol.privacy ? 'checked' : ''}`}><input type="checkbox" checked={protocol.privacy} onChange={() => setProtocol({...protocol, privacy: !protocol.privacy})} /> Privacy Safeguards Met (No faces)</label>
+              <label className={`protocol-item ${protocol.location ? 'checked' : ''}`}><input type="checkbox" checked={protocol.location} onChange={() => setProtocol({...protocol, location: !protocol.location})} /> Physically Present in District</label>
+              <label className={`protocol-item ${protocol.gpsMatch ? 'checked' : ''}`}><input type="checkbox" checked={protocol.gpsMatch} disabled={!locationVerified} onChange={() => setProtocol({...protocol, gpsMatch: !protocol.gpsMatch})} /> GPS Coordinates Match {formData.district || 'District'}</label>
               <label className={`protocol-item ${protocol.terms ? 'checked' : ''}`}><input type="checkbox" checked={protocol.terms} onChange={() => setProtocol({...protocol, terms: !protocol.terms})} /> Data Research Terms Accepted</label>
             </div>
           </div>
@@ -275,7 +311,7 @@ export default function SubmitPage() {
         </div>
       </form>
 
-      {/* Persistence Drawer */}
+      {/* Persistence Badge */}
       <button className="workspace-badge" onClick={() => setShowWorkspace(true)}>
         Storage {drafts.length > 0 ? `(${drafts.length})` : ''}
       </button>

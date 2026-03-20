@@ -24,7 +24,7 @@ export default function Navbar() {
 
   return (
     <nav className={`navbar ${isVisible ? 'visible' : 'hidden'}`}>
-      <div className="nav-container glass-card">
+      <div className="nav-container">
         <Link href="/" className="logo">
           <strong>Estrax</strong>
         </Link>
@@ -43,45 +43,42 @@ export default function Navbar() {
       <style jsx>{`
         .navbar {
           position: fixed;
-          top: 1.5rem;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 90%;
-          max-width: 1000px;
+          top: 0;
+          left: 0;
+          width: 100%;
           z-index: 1000;
-          transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s;
+          transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s;
+          padding: 1.5rem 0;
         }
 
         .navbar.hidden {
-          transform: translate(-50%, -100%);
+          transform: translateY(-100%);
           opacity: 0;
         }
 
         .nav-container {
+          max-width: 1200px;
+          margin: 0 auto;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 0.8rem 2rem;
-          border-radius: 100px;
+          padding: 0 2rem;
         }
 
         .logo {
-          font-size: 1.25rem;
+          font-size: 1.1rem;
           color: #000;
-          letter-spacing: -0.02em;
+          font-weight: 700;
+          letter-spacing: -0.03em;
         }
 
         .nav-links {
           display: flex;
-          gap: 2.5rem;
+          gap: 3rem;
           align-items: center;
-          font-size: 0.95rem;
+          font-size: 0.9rem;
           font-weight: 500;
           color: var(--text-secondary);
-        }
-
-        .nav-links a {
-          transition: color 0.3s;
         }
 
         .nav-links a:hover {
@@ -89,17 +86,19 @@ export default function Navbar() {
         }
 
         .btn-nav {
-          background: #000;
-          color: #fff;
-          padding: 0.6rem 1.5rem;
-          border-radius: 100px;
           font-size: 0.9rem;
           font-weight: 600;
-          transition: transform 0.3s;
+          color: #000;
+          border: 1px solid var(--border);
+          padding: 0.5rem 1.25rem;
+          border-radius: 100px;
+          transition: var(--transition);
         }
 
         .btn-nav:hover {
-          transform: scale(1.05);
+          background: #000;
+          color: #fff;
+          border-color: #000;
         }
 
         @media (max-width: 768px) {

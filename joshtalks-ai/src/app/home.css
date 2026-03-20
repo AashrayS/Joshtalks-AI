@@ -1,3 +1,7 @@
+.main-content {
+  padding-top: 80px;
+}
+
 .home-container {
   overflow-x: hidden;
   position: relative;
@@ -6,7 +10,7 @@
 
 /* Hero Section */
 .hero {
-  min-height: 100vh;
+  min-height: 90vh; /* Scaled down */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,46 +20,50 @@
 }
 
 .brand-badge {
-  font-size: 0.9rem;
+  font-size: 0.8rem; /* Scaled down */
   font-weight: 600;
   color: var(--text-secondary);
   background: var(--bg-accent);
-  padding: 0.5rem 1.25rem;
+  padding: 0.4rem 1rem;
   border-radius: 100px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   border: 1px solid var(--border);
 }
 
 .typewriter-h1 {
-  font-size: clamp(3rem, 8vw, 6rem);
-  font-weight: 800;
-  line-height: 1.05;
+  font-size: clamp(2.5rem, 6vw, 4.5rem); /* Scaled down significantly */
+  font-weight: 700;
+  line-height: 1.1;
   letter-spacing: -0.05em;
   color: #000;
-  max-width: 1100px;
-  min-height: 2.2em; /* Prevent layout shift */
+  max-width: 900px;
 }
 
 .hero-subtext {
-  font-size: 1.4rem;
+  font-size: 1.15rem; /* Scaled down */
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin: 2rem 0 3.5rem;
-  max-width: 650px;
+  line-height: 1.7;
+  margin: 1.5rem 0 3rem;
+  max-width: 550px;
 }
 
-/* Icon Curve Section */
+.btn-group {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: center;
+}
+
+/* Icon Curve Section Refined */
 .icon-curve-section {
-  padding: 8rem 0;
-  background: radial-gradient(circle at center, #fafafa 0%, #fff 70%);
+  padding: 6rem 0;
 }
 
 .icon-curve-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 6rem;
+  gap: 1.25rem;
+  margin-bottom: 5rem;
   position: relative;
 }
 
@@ -63,34 +71,34 @@
   content: '';
   position: absolute;
   top: 50%;
-  width: 80%;
-  height: 200px;
+  width: 70%;
+  height: 150px;
   border-top: 1px solid var(--border);
   border-radius: 100%;
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 .icon-bubble {
-  width: 64px;
-  height: 64px;
+  width: 50px; /* Scaled down */
+  height: 50px;
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  color: #333;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  font-size: 1.1rem;
+  color: #666;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
   transition: var(--transition);
 }
 
 .icon-bubble.active {
   background: #000;
   color: #fff;
-  transform: scale(1.15) translateY(-20px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  transform: scale(1.1) translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.06);
 }
 
 .section-text.centered {
@@ -98,33 +106,37 @@
 }
 
 .section-text h2 {
-  font-size: 3rem;
+  font-size: 2.5rem; /* Scaled down */
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   color: #000;
 }
 
+.section-text p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
 /* Mode Section */
-.mode-section {
+.mode-toggle-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4rem;
+  justify-content: center;
+  margin-bottom: 3rem;
 }
 
 .mode-toggle {
-  background: var(--bg-accent);
-  padding: 0.4rem;
+  background: #f1f1f4;
+  padding: 0.35rem;
   border-radius: 100px;
   display: flex;
   position: relative;
-  width: 280px;
+  width: 240px;
 }
 
 .mode-toggle button {
   flex: 1;
-  padding: 0.8rem;
-  font-size: 0.95rem;
+  padding: 0.65rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-secondary);
   z-index: 2;
@@ -136,103 +148,37 @@
 }
 
 .mode-slider {
-  position: absolute;
-  top: 0.4rem;
-  left: 0.4rem;
-  width: calc(50% - 0.4rem);
-  height: calc(100% - 0.8rem);
   background: #000;
   border-radius: 100px;
-  transition: var(--transition);
-  z-index: 1;
 }
 
-.mode-slider.admin { transform: translateX(100%); }
-
 .mode-card {
-  max-width: 800px;
+  max-width: 900px;
+  margin: 0 auto;
+  border: none; /* Shadowless integrated look */
   padding: 4rem;
   text-align: center;
 }
 
-/* Editor Preview Section */
+/* Editor Preview Refined */
 .editor-preview-section {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.2fr 1fr;
   align-items: center;
-  gap: 6rem;
-}
-
-.editor-glow-container {
-  position: relative;
-  padding: 2rem;
-}
-
-.glow {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  filter: blur(80px);
-  opacity: 0.3;
-  z-index: -1;
-}
-
-.glow-red {
-  bottom: -20px;
-  left: -20px;
-  background: #ff4d4d;
-}
-
-.glow-blue {
-  top: -20px;
-  right: -20px;
-  background: #4285f4;
+  gap: 5rem;
+  padding-bottom: 8rem;
 }
 
 .editor-window {
-  border-radius: 12px;
-  overflow: hidden;
-  background: #fff;
-  border: 1px solid var(--border);
-}
-
-.editor-header {
-  background: #fbfbfd;
-  padding: 0.75rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-.editor-dots {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.editor-dots span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #e1e1e1;
-}
-
-.editor-tab {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-.editor-content {
-  padding: 2rem;
-  background: #fff;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.04);
 }
 
 .editor-content pre {
-  font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: #333;
+  font-size: 0.85rem;
+}
+
+.section-text h2 {
+  font-size: 2.2rem;
 }
 
 @media (max-width: 900px) {

@@ -10,11 +10,11 @@ export default function ParticleBackground() {
     const ctx = canvas.getContext('2d');
     let animationFrameId;
     let particles = [];
-    const particleCount = 200;
+    const particleCount = 150; // Density reduced
     const colors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853'];
     
     let mouse = { x: -1000, y: -1000 };
-    let isHovering = false;
+    let time = 0;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -31,18 +31,17 @@ export default function ParticleBackground() {
         this.y = Math.random() * canvas.height;
         this.baseX = this.x;
         this.baseY = this.y;
-        this.size = Math.random() * 1.5 + 0.5;
+        this.size = Math.random() * 1.2 + 0.4;
         this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.velocity = Math.random() * 0.2 + 0.1;
+        this.velocity = Math.random() * 0.15 + 0.05;
         this.angle = Math.random() * Math.PI * 2;
+        this.noiseOffset = Math.random() * 1000;
       }
 
       update() {
-        // Subtle drift
         this.baseX += Math.cos(this.angle) * this.velocity;
         this.baseY += Math.sin(this.angle) * this.velocity;
 
-        // Reset if out of bounds
         if (this.baseX < 0 || this.baseX > canvas.width || this.baseY < 0 || this.baseY > canvas.height) {
           this.reset();
         }
@@ -51,22 +50,23 @@ export default function ParticleBackground() {
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
         
-        let force = (200 - distance) / 200;
-        if (force < 0) force = 0;
-
-        if (distance < 250) {
-          // Circular structure on hover
+        if (distance < 300) {
+          // Organic squishy blob structure
           let targetAngle = Math.atan2(dy, dx) + Math.PI;
-          let circleRadius = 150;
-          let tx = mouse.x + Math.cos(targetAngle + (this.angle * 0.5)) * circleRadius;
-          let ty = mouse.y + Math.sin(targetAngle + (this.angle * 0.5)) * circleRadius;
           
-          this.x += (tx - this.x) * 0.08;
-          this.y += (ty - this.y) * 0.08;
+          // Use a combination of sine waves to simulate "squishiness"
+          let noise = Math.sin(time * 0.02 + this.noiseOffset) * 20 + 
+                      Math.sin(time * 0.05 + this.noiseOffset * 0.5) * 10;
+          
+          let circleRadius = 160 + noise; // Variable radius for squishiness
+          let tx = mouse.x + Math.cos(targetAngle + (this.angle * 0.3)) * circleRadius;
+          let ty = mouse.y + Math.sin(targetAngle + (this.angle * 0.3)) * circleRadius;
+          
+          this.x += (tx - this.x) * 0.06;
+          this.y += (ty - this.y) * 0.06;
         } else {
-          // Return to base behavior
-          this.x += (this.baseX - this.x) * 0.05;
-          this.y += (this.baseY - this.y) * 0.05;
+          this.x += (this.baseX - this.x) * 0.04;
+          this.y += (this.baseY - this.y) * 0.04;
         }
       }
 
@@ -87,6 +87,7 @@ export default function ParticleBackground() {
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      time++;
       particles.forEach(p => {
         p.update();
         p.draw();
@@ -122,7 +123,7 @@ export default function ParticleBackground() {
         left: 0,
         zIndex: 0,
         pointerEvents: 'none',
-        opacity: 0.6
+        opacity: 0.5
       }}
     />
   );

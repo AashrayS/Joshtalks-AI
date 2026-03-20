@@ -133,5 +133,14 @@ select, textarea { width: 100% !important; background: #fbfbfd; border: 1px soli
 
 @media (max-width: 768px) {
   .submission-form .card { padding: 2.5rem 1.5rem; }
-}
+  
+  .workspace-badge {
+    bottom: auto;
+    top: 5.5rem; /* Below Navbar */
+    right: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.7rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+} /* End mobile media query */
 } /* End .submit-page-root */

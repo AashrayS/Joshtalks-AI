@@ -1,3 +1,4 @@
+.admin-page-root {
 /* Admin Dashboard Styling - Phase 8 Upgrades */
 
 .confidence-tag {
@@ -217,7 +218,7 @@
 .sub-info { padding: 2rem; }
 .sub-meta { display: flex; justify-content: space-between; margin-bottom: 1rem; }
 .district { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #111; }
-.description { font-size: 0.9rem; color: #444; margin-bottom: 2rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.description { font-size: 0.9rem; color: #444; margin-bottom: 2rem; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
 .card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .q-btn { padding: 0.8rem; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; }
@@ -248,3 +249,4 @@
   .modal-info-side { padding: 2rem; }
   .stats-row { grid-template-columns: 1fr 1fr; }
 }
+} /* End .admin-page-root */

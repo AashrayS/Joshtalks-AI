@@ -104,7 +104,8 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="admin-container animate-fade-in">
+    <div className="admin-page-root">
+      <div className="admin-container animate-fade-in">
       <header className="admin-header">
         <div className="brand">
           <h1>Estrax console</h1>
@@ -280,6 +281,7 @@ export default function AdminPage() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

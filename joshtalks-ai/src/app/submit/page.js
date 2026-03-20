@@ -228,7 +228,8 @@ export default function SubmitPage() {
   }
 
   return (
-    <div className="container animate-fade-in">
+    <div className="submit-page-root">
+      <div className="container animate-fade-in">
       <div className="header">
         <h1>{formData.district ? `Mapping ${formData.district}` : 'Regional Mapping'}</h1>
         <p>Your inputs directly architect the regional intelligence of Bharat.</p>
@@ -396,6 +397,7 @@ export default function SubmitPage() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

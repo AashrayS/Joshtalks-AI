@@ -1,3 +1,4 @@
+.submit-page-root {
 /* Contributor UI - Phase 9 Upgrades */
 
 .scan-overlay {
@@ -133,3 +134,4 @@ select, textarea { width: 100% !important; background: #fbfbfd; border: 1px soli
 @media (max-width: 768px) {
   .submission-form .card { padding: 2.5rem 1.5rem; }
 }
+} /* End .submit-page-root */

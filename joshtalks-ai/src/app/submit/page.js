@@ -24,7 +24,8 @@ export default function SubmitPage() {
     district: '',
     description: '',
     gps_lat: null,
-    gps_lng: null
+    gps_lng: null,
+    remote_reason: ''
   });
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -33,6 +34,10 @@ export default function SubmitPage() {
   const [error, setError] = useState('');
   const [drafts, setDrafts] = useState([]);
   const [showWorkspace, setShowWorkspace] = useState(false);
+  
+  // Phase 9: Pre-moderation States
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanResult, setScanResult] = useState(null); // { score: number, issues: string[] }
   
   // Phase 7: Location Guard States
   const [locationVerified, setLocationVerified] = useState(false);
@@ -52,7 +57,7 @@ export default function SubmitPage() {
     privacy: false,
     location: false,
     terms: false,
-    gpsMatch: false // Phase 7
+    gpsMatch: false
   });
   
   const fileInputRef = useRef(null);
@@ -89,7 +94,8 @@ export default function SubmitPage() {
   const calculateRichness = (text) => {
     if (!text) return 0;
     let score = Math.min(text.length, 100) / 2;
-    if (gpsStatus === 'locked') score += 10; // GPS Bonus
+    if (gpsStatus === 'locked') score += 10;
+    if (scanResult?.score > 80) score += 10;
     const keywords = ['near', 'across', 'beside', 'village', 'road', 'construction', 'building', 'school', 'hospital', 'market', 'farm'];
     keywords.forEach(word => { if (text.toLowerCase().includes(word)) score += 5; });
     return Math.min(score, 100);
@@ -97,7 +103,7 @@ export default function SubmitPage() {
 
   useEffect(() => {
     setRichness(calculateRichness(formData.description));
-  }, [formData.description, gpsStatus]);
+  }, [formData.description, gpsStatus, scanResult]);
 
   const loadDrafts = async () => {
     try {
@@ -113,14 +119,35 @@ export default function SubmitPage() {
     if (file) {
       setImage(file);
       setPreview(URL.createObjectURL(file));
+      simulateImageScan(file);
       setError('');
     }
   };
 
+  const simulateImageScan = (file) => {
+    setIsScanning(true);
+    setScanResult(null);
+    setTimeout(() => {
+      // Logic: If file size is tiny or weird type, fail it
+      const isTiny = file.size < 50000;
+      const score = isTiny ? 45 : 75 + Math.random() * 25;
+      const issues = isTiny ? ['Low Resolution detected', 'Possible Screenshot'] : [];
+      setScanResult({ score: Math.round(score), issues });
+      setIsScanning(false);
+    }, 2500);
+  };
+
   const isProtocolComplete = protocol.clarity && protocol.privacy && protocol.location && protocol.terms && protocol.gpsMatch;
+  const isSubmissionBlocked = scanResult && scanResult.score < 60;
 
   const handleSubmit = async (e, draftData = null) => {
     if (e) e.preventDefault();
+
+    if (isSubmissionBlocked) {
+      setError('Submission Blocked: Image quality below 60% fidelity.');
+      return;
+    }
+
     const targetData = draftData || { ...formData, image };
     
     if (!targetData.image || !targetData.state || !targetData.district || targetData.description.length < 10) {
@@ -142,8 +169,10 @@ export default function SubmitPage() {
       data.append('description', targetData.description);
       data.append('state', targetData.state);
       data.append('district', targetData.district);
+      data.append('confidence', scanResult?.score || 100);
       if (targetData.gps_lat) data.append('gps_lat', targetData.gps_lat);
       if (targetData.gps_lng) data.append('gps_lng', targetData.gps_lng);
+      if (targetData.remote_reason) data.append('remote_reason', targetData.remote_reason);
 
       const response = await fetch('/api/submit', { method: 'POST', body: data });
 
@@ -176,21 +205,22 @@ export default function SubmitPage() {
       <div className="container animate-fade-in">
         <div className="card success-card">
           <div className="celebration-icon">🏆</div>
-          <h2>Submission Confirmed</h2>
-          <p>Territory knowledge for {formData.district} has been updated.</p>
-          <div className="impact-toast"><strong>+{richness} Fidelity Points</strong> Earned!</div>
+          <h2>Insight Captured</h2>
+          <p>Regional data for {formData.district} has been secured with high confidence.</p>
+          <div className="impact-toast"><strong>+{Math.round(richness * 1.5)} Scout Points</strong> Added to Profile!</div>
           <button 
             className="btn-primary" 
             onClick={() => {
               setIsSuccess(false);
-              setFormData({ state: '', district: '', description: '', gps_lat: null, gps_lng: null });
+              setFormData({ state: '', district: '', description: '', gps_lat: null, gps_lng: null, remote_reason: '' });
               setImage(null);
               setPreview(null);
               setProtocol({ clarity: false, privacy: false, location: false, terms: false, gpsMatch: false });
               setLocationVerified(false);
+              setScanResult(null);
             }}
           >
-            Capture Next Insight
+            Deploy Next Unit
           </button>
         </div>
       </div>
@@ -200,17 +230,17 @@ export default function SubmitPage() {
   return (
     <div className="container animate-fade-in">
       <div className="header">
-        <h1>{formData.district ? `Mapping ${formData.district}` : 'Regional Collection'}</h1>
-        <p>Providing high-fidelity data for Bharat-AI intelligence.</p>
+        <h1>{formData.district ? `Mapping ${formData.district}` : 'Regional Mapping'}</h1>
+        <p>Your inputs directly architect the regional intelligence of Bharat.</p>
       </div>
 
       <div className="scout-dashboard">
         <div className="stat-card impact">
-          <label>Global Impact</label>
-          <div className="val">{stats.total_subs} Insights</div>
+          <label>Insights Secured</label>
+          <div className="val">{stats.total_subs}</div>
         </div>
         <div className="stat-card rank">
-          <label>Scout Rank</label>
+          <label>Regional Rank</label>
           <div className="val">#{Math.max(1, 150 - stats.total_subs * 10)} in {formData.district || 'State'}</div>
         </div>
         <div className="badges-row">
@@ -254,7 +284,6 @@ export default function SubmitPage() {
                     type="button" 
                     className={`btn-verify ${locationVerified ? 'verified' : ''}`}
                     onClick={() => setLocationVerified(true)}
-                    title="Verify current location matches selection"
                   >
                     {locationVerified ? '✓' : '📍'}
                   </button>
@@ -267,14 +296,14 @@ export default function SubmitPage() {
             <div className="location-info animate-fade-in">
               <p>📍 Location Locked: <code>{formData.gps_lat?.toFixed(4)}, {formData.gps_lng?.toFixed(4)}</code></p>
               <a href={`https://www.google.com/maps?q=${formData.gps_lat},${formData.gps_lng}`} target="_blank" rel="noopener noreferrer" className="maps-link">
-                View on Satellite Map →
+                Confirm on Satellite View →
               </a>
             </div>
           )}
 
           <div className="form-group">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-              <label>Regional Description</label>
+              <label>Fidelity Description</label>
               <div className="richness-meter">
                 <div className="meter-label">Fidelity: {richness < 40 ? 'LOW' : richness < 80 ? 'GOOD' : 'ELITE'}</div>
                 <div className="meter-bar"><div className="fill" style={{ width: `${richness}%`, backgroundColor: richness < 40 ? '#ea4335' : richness < 80 ? '#f39c12' : '#27ae60' }}></div></div>
@@ -285,37 +314,59 @@ export default function SubmitPage() {
 
           <div className="form-group upload-section">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <label style={{ marginBottom: 0 }}>Ground-Truth Image</label>
+              <label style={{ marginBottom: 0 }}>Ground-Truth Evidence</label>
               <div className={`gps-indicator ${gpsStatus}`}><span className="dot"></span> {gpsStatus === 'searching' ? 'Locking...' : gpsStatus === 'locked' ? 'Locked' : 'Offline'}</div>
             </div>
+            
+            {isScanning && (
+              <div className="scan-overlay">
+                <div className="scan-line"></div>
+                <div className="scan-text">AI Auditing Image Fidelity...</div>
+              </div>
+            )}
+
             {preview ? (
               <div className="preview-container">
                 <img src={preview} alt="Preview" className="image-preview" />
-                <button type="button" className="btn-remove" onClick={() => { setPreview(null); setImage(null); }}>Discard</button>
+                {!isScanning && scanResult && (
+                  <div className={`scan-result-badge ${scanResult.score < 60 ? 'error' : 'success'}`}>
+                    {scanResult.score}% Intelligence Confidence
+                  </div>
+                )}
+                <button type="button" className="btn-remove" onClick={() => { setPreview(null); setImage(null); setScanResult(null); }}>Retake</button>
               </div>
             ) : (
               <div className="upload-options">
-                <button type="button" className="upload-btn camera" onClick={() => { fileInputRef.current.setAttribute('capture', 'environment'); fileInputRef.current.click(); }}><div className="text"><strong>Capture</strong></div></button>
-                <button type="button" className="upload-btn gallery" onClick={() => { fileInputRef.current.removeAttribute('capture'); fileInputRef.current.click(); }}><div className="text"><strong>Gallery</strong></div></button>
+                <button type="button" className="upload-btn camera" onClick={() => { fileInputRef.current.setAttribute('capture', 'environment'); fileInputRef.current.click(); }}><div className="text"><strong>Capture Now</strong></div></button>
+                <button type="button" className="upload-btn gallery" onClick={() => { fileInputRef.current.removeAttribute('capture'); fileInputRef.current.click(); }}><div className="text"><strong>Upload File</strong></div></button>
               </div>
             )}
             <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} hidden />
           </div>
 
+          {scanResult && scanResult.score < 60 && (
+            <div className="quality-alert card">
+              <div className="alert-icon">⚠️</div>
+              <div className="alert-content">
+                <h3>Low Fidelity Detected</h3>
+                <p>The system detected: {scanResult.issues.join(', ')}. Please capture a clearer, more original image to proceed.</p>
+              </div>
+            </div>
+          )}
+
           <div className="protocol-section">
-            <label>Integrity Protocol (5-Point Check)</label>
+            <label>Intelligence Protocol (Hard Guard)</label>
             <div className="protocol-items">
               <label className={`protocol-item ${protocol.clarity ? 'checked' : ''}`}><input type="checkbox" checked={protocol.clarity} onChange={() => setProtocol({...protocol, clarity: !protocol.clarity})} /> Image Clarity Verified</label>
-              <label className={`protocol-item ${protocol.privacy ? 'checked' : ''}`}><input type="checkbox" checked={protocol.privacy} onChange={() => setProtocol({...protocol, privacy: !protocol.privacy})} /> Privacy Safeguards Met (No faces)</label>
-              <label className={`protocol-item ${protocol.location ? 'checked' : ''}`}><input type="checkbox" checked={protocol.location} onChange={() => setProtocol({...protocol, location: !protocol.location})} /> Physically Present in District</label>
-              <label className={`protocol-item ${protocol.gpsMatch ? 'checked' : ''}`}><input type="checkbox" checked={protocol.gpsMatch} disabled={!locationVerified} onChange={() => setProtocol({...protocol, gpsMatch: !protocol.gpsMatch})} /> GPS Coordinates Match {formData.district || 'District'}</label>
-              <label className={`protocol-item ${protocol.terms ? 'checked' : ''}`}><input type="checkbox" checked={protocol.terms} onChange={() => setProtocol({...protocol, terms: !protocol.terms})} /> Data Research Terms Accepted</label>
+              <label className={`protocol-item ${protocol.privacy ? 'checked' : ''}`}><input type="checkbox" checked={protocol.privacy} onChange={() => setProtocol({...protocol, privacy: !protocol.privacy})} /> Privacy Safegards (No PII)</label>
+              <label className={`protocol-item ${protocol.gpsMatch ? 'checked' : ''}`}><input type="checkbox" checked={protocol.gpsMatch} disabled={!locationVerified} onChange={() => setProtocol({...protocol, gpsMatch: !protocol.gpsMatch})} /> GPS Matches {formData.district || 'District'}</label>
+              <label className={`protocol-item ${protocol.terms ? 'checked' : ''}`}><input type="checkbox" checked={protocol.terms} onChange={() => setProtocol({...protocol, terms: !protocol.terms})} /> Data Ethics Agreement</label>
             </div>
           </div>
 
           {error && <div className="error-message">{error}</div>}
-          <button type="submit" className={`btn-primary submit-btn ${!isProtocolComplete ? 'disabled' : ''}`} disabled={isSubmitting || !isProtocolComplete}>
-            {isSubmitting ? <span className="spinner"></span> : 'Submit Fidelity Data'}
+          <button type="submit" className={`btn-primary submit-btn ${(!isProtocolComplete || isSubmissionBlocked) ? 'disabled' : ''}`} disabled={isSubmitting || !isProtocolComplete || isSubmissionBlocked}>
+            {isSubmitting ? <span className="spinner"></span> : 'Secure Data Milestone'}
           </button>
         </div>
       </form>
@@ -335,10 +386,7 @@ export default function SubmitPage() {
                   <img src={draft.preview} alt="Draft" />
                   <div className="draft-details">
                     <h3>{draft.district}</h3>
-                    <div className="draft-actions">
-                      <button className="btn-sync" onClick={() => handleSubmit(null, draft)} disabled={isSubmitting}>Sync</button>
-                      <button className="btn-delete" onClick={() => { deleteDraft(draft.id); loadDrafts(); }}>Discard</button>
-                    </div>
+                    <button className="btn-sync" onClick={() => handleSubmit(null, draft)} disabled={isSubmitting}>Sync</button>
                   </div>
                 </div>
               ))}

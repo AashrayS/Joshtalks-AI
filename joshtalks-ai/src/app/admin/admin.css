@@ -63,6 +63,57 @@
 .reputation-pill.Trusted { background: #27ae60; color: #fff; }
 .reputation-pill.Suspicious { background: #ea4335; color: #fff; }
 
+.moderation-panel {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: #f8f9fb;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.moderation-panel label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #888;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.insight-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.insight-stat span { font-size: 0.85rem; font-weight: 600; }
+.insight-stat strong { font-size: 1.2rem; font-weight: 800; color: #000; }
+
+.insight-issues ul {
+  margin: 0.5rem 0;
+  padding-left: 1.2rem;
+}
+
+.insight-issues li {
+  font-size: 0.8rem;
+  color: #ea4335;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.remote-justification {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #ddd;
+}
+
+.remote-justification p {
+  font-size: 0.85rem;
+  color: #444;
+  font-style: italic;
+}
+
 .btn-escalate {
   flex: 1;
   padding: 1.25rem;

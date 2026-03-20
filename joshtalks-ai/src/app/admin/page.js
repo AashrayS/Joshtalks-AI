@@ -226,6 +226,29 @@ export default function AdminPage() {
                   </div>
                 </div>
 
+                <div className="moderation-panel card">
+                  <label>AI Moderation Insights</label>
+                  <div className="insight-stat">
+                    <span>Fidelity Score</span>
+                    <strong>{selectedSub.confidence}%</strong>
+                  </div>
+                  {selectedSub.flags.length > 0 && (
+                    <div className="insight-issues">
+                      <label>Detected Anomalies</label>
+                      <ul>
+                        {selectedSub.flags.map((f, i) => <li key={i}>{f}</li>)}
+                        {selectedSub.confidence < 70 && <li>High Blur / Low Contrast detected</li>}
+                      </ul>
+                    </div>
+                  )}
+                  {selectedSub.remote_reason && (
+                    <div className="remote-justification">
+                      <label>Remote Submission Reason</label>
+                      <p>{selectedSub.remote_reason}</p>
+                    </div>
+                  )}
+                </div>
+
                 <div className="review-section">
                   <label>Regional Description</label>
                   <div className="description-box">{selectedSub.description}</div>

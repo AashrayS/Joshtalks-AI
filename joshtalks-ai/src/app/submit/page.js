@@ -93,8 +93,8 @@ export default function SubmitPage() {
     return (
       <div className="container animate-fade-in">
         <div className="card success-card">
-          <div className="success-icon">✓</div>
-          <h2>Submission Successful!</h2>
+          <div className="success-badge">SUCCESS</div>
+          <h2>Submission Received</h2>
           <p>Thank you for contributing. Your submission is now pending review.</p>
           <button 
             className="btn-primary" 
@@ -174,10 +174,9 @@ export default function SubmitPage() {
                   fileInputRef.current.setAttribute('capture', 'environment');
                   fileInputRef.current.click();
                 }}>
-                  <span className="icon">📷</span>
                   <div className="text">
                     <strong>Take Photo</strong>
-                    <span>Use your camera</span>
+                    <span>Use camera</span>
                   </div>
                 </button>
                 
@@ -185,10 +184,9 @@ export default function SubmitPage() {
                   fileInputRef.current.removeAttribute('capture');
                   fileInputRef.current.click();
                 }}>
-                  <span className="icon">🖼️</span>
                   <div className="text">
                     <strong>Upload</strong>
-                    <span>From your gallery</span>
+                    <span>From gallery</span>
                   </div>
                 </button>
               </div>

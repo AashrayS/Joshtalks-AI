@@ -152,6 +152,28 @@ input, select, textarea {
   animation: fadeIn 0.8s ease forwards;
 }
 
+/* Global Logo Symbol */
+.logo-symbol {
+  width: 32px;
+  height: 32px;
+  background: #000;
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.logo-symbol.small {
+  width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
+  border-radius: 6px;
+}
+
 @keyframes float {
   0% { transform: translateY(0); }
   50% { transform: translateY(-10px); }

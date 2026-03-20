@@ -9,12 +9,21 @@ export default function Home() {
 
   return (
     <div className="home-container animate-fade-in">
+      {/* Particle Background */}
+      <div className="particle-container">
+        <div className="particle-burst"></div>
+      </div>
+
       {/* Hero Section */}
       <section className="hero">
-        <div className="badge animate-float">Agentic Collection Platform</div>
+        <div className="hero-logo animate-fade-in">
+          <div className="logo-symbol small">A</div>
+          <span>Village Data Collection</span>
+        </div>
+        
         <h1>
           Experience liftoff with <br />
-          <span>India&apos;s Village Data</span>
+          India&apos;s Next-Gen Data
         </h1>
         <p>
           Collecting high-quality image + description pairs from rural India <br />
@@ -44,19 +53,19 @@ export default function Home() {
         <div className="cta-wrapper animate-fade-in" key={activeMode}>
           {activeMode === 'contributor' ? (
             <div className="mode-content">
-              <h3>Help us bridge the regional AI gap</h3>
+              <h3>Bridge the regional AI gap</h3>
               <div className="btn-group">
                 <Link href="/submit" className="btn-primary">
                   Start Contributing
                 </Link>
                 <Link href="#cases" className="btn-secondary">
-                  How it works
+                  Learn more
                 </Link>
               </div>
             </div>
           ) : (
             <div className="mode-content">
-              <h3>Review and validate ground-truth data</h3>
+              <h3>Validate ground-truth data</h3>
               <div className="btn-group">
                 <Link href="/admin" className="btn-primary">
                   Access Dashboard

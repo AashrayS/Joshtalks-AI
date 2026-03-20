@@ -7,8 +7,8 @@ export default function Navbar() {
     <nav className="navbar glass-card">
       <div className="nav-container">
         <Link href="/" className="logo">
-          <span className="logo-icon">🚀</span>
-          <strong>India Village</strong>
+          <div className="logo-symbol">A</div>
+          <strong>Village Data</strong>
         </Link>
         
         <div className="nav-links">
@@ -50,12 +50,29 @@ export default function Navbar() {
           display: flex;
           align-items: center;
           gap: 0.75rem;
-          font-size: 1.2rem;
-          color: var(--text-primary);
+          font-size: 1.1rem;
+          color: #000;
+          font-weight: 700;
         }
 
-        .logo-icon {
-          font-size: 1.5rem;
+        .logo-symbol {
+          width: 32px;
+          height: 32px;
+          background: #000;
+          color: #fff;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.1rem;
+          font-weight: 800;
+        }
+
+        .logo-symbol.small {
+          width: 24px;
+          height: 24px;
+          font-size: 0.8rem;
+          border-radius: 6px;
         }
 
         .nav-links {

@@ -1,4 +1,5 @@
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import ParticleBackground from "./components/ParticleBackground";
 import "./globals.css";
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
         <ParticleBackground />
         <Navbar />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

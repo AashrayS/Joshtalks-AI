@@ -45,7 +45,7 @@ export default function Home() {
       </section>
 
       {/* Panoramic Icon Curve - DARK Section */}
-      <section className="icon-curve-section dark-context animate-fade-in">
+      <section id="platform" className="icon-curve-section dark-context animate-fade-in">
         <div className="icon-curve-container">
           {[
             {s: "✓", a: false}, {s: "⁝", a: false}, {s: "❏", a: false}, 
@@ -86,7 +86,7 @@ export default function Home() {
       </section>
 
       {/* Regional Intelligence Core - DARK Section */}
-      <section className="editor-preview-section dark-context">
+      <section id="solutions" className="editor-preview-section dark-context">
         <div className="editor-window-container">
           <div className="editor-glow-backdrop"></div>
           <div className="editor-window">

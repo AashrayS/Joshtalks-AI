@@ -38,7 +38,7 @@ export default function Home() {
           <Link href="/submit" className="btn-primary">
             Start Contributing
           </Link>
-          <Link href="#solutions" className="btn-secondary">
+          <Link href="#future" className="btn-primary secondary-style">
             Explore use cases
           </Link>
         </div>
@@ -65,7 +65,7 @@ export default function Home() {
       </section>
 
       {/* Mode Section - Direct Join */}
-      <section className="mode-section container">
+      <section id="future" className="mode-section container">
         <div className="section-text centered">
           <h2>The Future of Collection</h2>
         </div>

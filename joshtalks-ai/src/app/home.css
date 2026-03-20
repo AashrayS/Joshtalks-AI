@@ -53,6 +53,16 @@
   justify-content: center;
 }
 
+.btn-primary.secondary-style {
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
+}
+
+.btn-primary.secondary-style:hover {
+  background: #f8f8f8;
+}
+
 /* Icon Curve Section - Dark & Panoramic */
 .icon-curve-section {
   padding: 10rem 0;

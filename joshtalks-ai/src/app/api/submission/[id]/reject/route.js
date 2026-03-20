@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 
 export async function POST(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   const { reason } = await request.json();
   const adminPassword = request.headers.get('x-admin-password');
 

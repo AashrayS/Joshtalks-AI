@@ -108,6 +108,15 @@ export default function SubmitPage() {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
+      setError('');
+    }
+  };
+
   const isProtocolComplete = protocol.clarity && protocol.privacy && protocol.location && protocol.terms && protocol.gpsMatch;
 
   const handleSubmit = async (e, draftData = null) => {

@@ -14,7 +14,7 @@ export default function Home() {
       setTypewriterText(fullText.slice(0, i));
       i++;
       if (i > fullText.length) clearInterval(interval);
-    }, 5000 / fullText.length);
+    }, 2000 / fullText.length);
     return () => clearInterval(interval);
   }, []);
 

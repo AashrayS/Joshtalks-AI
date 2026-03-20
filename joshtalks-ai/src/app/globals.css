@@ -136,7 +136,7 @@ input, select, textarea {
   background: linear-gradient(180deg, var(--accent-blue), var(--accent-red), var(--accent-green));
   margin-left: 2px;
   vertical-align: middle;
-  animation: blink 1s step-end infinite;
+  animation: blink 0.75s step-end infinite;
 }
 
 @keyframes blink { 50% { opacity: 0; } }

@@ -48,17 +48,16 @@ export default function Home() {
       {/* Panoramic Icon Curve - DARK Section */}
       <section className="icon-curve-section dark-context animate-fade-in">
         <div className="icon-curve-container">
-          <div className="icon-bubble"><span className="symbol">✓</span></div>
-          <div className="icon-bubble"><span className="symbol">⁝</span></div>
-          <div className="icon-bubble"><span className="symbol">❏</span></div>
-          <div className="icon-bubble"><span className="symbol">⚬</span></div>
-          <div className="icon-bubble"><span className="symbol">⚀</span></div>
-          <div className="icon-bubble active"><span className="symbol">立方</span></div>
-          <div className="icon-bubble"><span className="symbol">↺</span></div>
-          <div className="icon-bubble"><span className="symbol">↻</span></div>
-          <div className="icon-bubble"><span className="symbol">▣</span></div>
-          <div className="icon-bubble"><span className="symbol">▦</span></div>
-          <div className="icon-bubble"><span className="symbol">◰</span></div>
+          {[
+            {s: "✓", a: false}, {s: "⁝", a: false}, {s: "❏", a: false}, 
+            {s: "⚬", a: false}, {s: "⚀", a: false}, {s: "立方", a: true}, 
+            {s: "↺", a: false}, {s: "↻", a: false}, {s: "▣", a: false}, 
+            {s: "▦", a: false}, {s: "◰", a: false}
+          ].map((item, idx) => (
+            <div key={idx} className={`icon-bubble ${item.a ? 'active' : ''}`}>
+              <span className="symbol">{item.s}</span>
+            </div>
+          ))}
         </div>
         <div className="section-text centered">
           <h2>An AI-First Ecosystem</h2>
@@ -68,6 +67,10 @@ export default function Home() {
 
       {/* Mode Toggle - Light Section */}
       <section className="mode-section container">
+        <div className="section-text centered">
+          <h2 style={{ fontSize: '2.2rem', marginBottom: '3rem' }}>The Future of Collection</h2>
+        </div>
+        
         <div className="mode-toggle-wrapper">
           <div className="mode-toggle">
             <button 
@@ -105,38 +108,55 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Editor Preview Section - DARK Section */}
+      {/* High-Fidelity Editor Preview - DARK Section */}
       <section className="editor-preview-section dark-context">
-        <div className="editor-glow-container">
-          <div className="glow glow-red"></div>
-          <div className="glow glow-blue"></div>
-          <div className="editor-window glass-card">
-            <div className="editor-header">
-              <div className="editor-dots"><span></span><span></span><span></span></div>
-              <div className="editor-tab">Implementation_plan.md</div>
-            </div>
-            <div className="editor-content">
-              <pre>
-                <code>
-<span className="st-comment">// Estrax Data Protocol v1.0</span>{"\n"}
-<span className="st-import">import</span> <span className="st-bracket">{"{"}</span> <span className="st-prop">Collector</span> <span className="st-bracket">{"}"}</span> <span className="st-import">from</span> <span className="st-string">"@estrax/core"</span>;{"\n\n"}
-<span className="st-keyword">export default function</span> <span className="st-func">DataNode</span><span className="st-bracket">() {"{"}</span>{"\n"}
-{"  "}<span className="st-keyword">const</span> <span className="st-prop">data</span> = <span className="st-prop">Collector</span>.<span className="st-func">useRegion</span><span className="st-bracket">(</span><span className="st-string">"Bihar"</span><span className="st-bracket">)</span>;{"\n"}
-{"  "}
-{"  "}<span className="st-keyword">return</span> <span className="st-bracket">(</span>{"\n"}
-{"    "}<span className="st-bracket">&lt;</span><span className="st-keyword">div</span> <span className="st-prop">className</span>=<span className="st-string">"rounded-md bg-orange-500 p-4"</span><span className="st-bracket">&gt;</span>{"\n"}
-{"      "}Regional Intelligence Active{"\n"}
-{"    "}<span className="st-bracket">&lt;/</span><span className="st-keyword">div</span><span className="st-bracket">&gt;</span>{"\n"}
-{"  "}<span className="st-bracket">)</span>;{"\n"}
-<span className="st-bracket">{"}"}</span>
-                </code>
-              </pre>
+        <div className="editor-window-container">
+          <div className="editor-glow-backdrop"></div>
+          <div className="editor-window">
+            <aside className="editor-sidebar">
+              <div className="sidebar-icon active">❏</div>
+              <div className="sidebar-icon">⚬</div>
+              <div className="sidebar-icon">▣</div>
+              <div className="sidebar-icon">↺</div>
+            </aside>
+            <div className="editor-main">
+              <div className="editor-header">
+                <div className="editor-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div className="editor-tabs">
+                  <div className="editor-tab">Implementation_plan.md</div>
+                  <div className="editor-tab active">LoginButton.tsx 1</div>
+                </div>
+              </div>
+              <div className="editor-breadcrumbs">
+                app &gt; components &gt; LoginButton.tsx
+              </div>
+              <div className="editor-code-row">
+                <div className="line-numbers">
+                  1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />10<br />11<br />12
+                </div>
+                <div className="code-field">
+                  <span className="st-purple">import</span> Link <span className="st-purple">from</span> <span className="st-orange">'next/link'</span>;<br /><br />
+                  <span className="st-purple">export default function</span> <span className="st-pink">LoginButton</span>(): <span className="st-blue">React.ReactElement</span><span className="st-bracket">{"{"}</span><br />
+                  &nbsp;&nbsp;<span className="st-purple">return</span> (<br /><br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;Link<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;href=<span className="st-orange">"/api/auth/strava/login"</span><br />
+                  <span className="code-line-active">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;className=<span className="st-orange">"rounded-md bg-orange-500 px-4 py-2 font-semibold"</span>&gt;
+                  </span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login with Strava<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/Link&gt;<br />
+                  &nbsp;&nbsp;);<br />
+                  <span className="st-bracket">{"}"}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div className="section-text">
-          <h2>Precision Core</h2>
-          <p>Estrax offers tab autocompletion, natural language commands, and a context-aware configurable agent.</p>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>An AI IDE Core</h2>
+          <p>Estrax's Editor view offers tab autocompletion, natural language code commands, and a configurable, and context-aware configurable agent.</p>
         </div>
       </section>
     </div>

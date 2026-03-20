@@ -1,29 +1,42 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Navbar() {
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <nav className="navbar glass-card">
-      <div className="nav-container">
+    <nav className={`navbar ${isVisible ? 'visible' : 'hidden'}`}>
+      <div className="nav-container glass-card">
         <Link href="/" className="logo">
-          <div className="logo-symbol">A</div>
-          <strong>Village Data</strong>
+          <strong>Estrax</strong>
         </Link>
         
         <div className="nav-links">
-          <Link href="#product">Product</Link>
-          <Link href="#cases">Use Cases</Link>
-          <Link href="#pricing">Pricing</Link>
-          <Link href="#blog">Blog</Link>
-          <div className="nav-dropdown">
-            <span>Resources ▾</span>
-          </div>
+          <Link href="#platform">Platform</Link>
+          <Link href="#solutions">Solutions</Link>
+          <Link href="#company">Company</Link>
         </div>
         
-        <Link href="/submit" className="btn-primary btn-nav">
+        <Link href="/submit" className="btn-nav">
           Get Started
-          <span className="arrow">→</span>
         </Link>
       </div>
 
@@ -34,73 +47,62 @@ export default function Navbar() {
           left: 50%;
           transform: translateX(-50%);
           width: 90%;
-          max-width: 1200px;
+          max-width: 1000px;
           z-index: 1000;
-          padding: 0.75rem 2rem;
-          border-radius: 100px;
+          transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s;
+        }
+
+        .navbar.hidden {
+          transform: translate(-50%, -100%);
+          opacity: 0;
         }
 
         .nav-container {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          padding: 0.8rem 2rem;
+          border-radius: 100px;
         }
 
         .logo {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          font-size: 1.1rem;
+          font-size: 1.25rem;
           color: #000;
-          font-weight: 700;
-        }
-
-        .logo-symbol {
-          width: 32px;
-          height: 32px;
-          background: #000;
-          color: #fff;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.1rem;
-          font-weight: 800;
-        }
-
-        .logo-symbol.small {
-          width: 24px;
-          height: 24px;
-          font-size: 0.8rem;
-          border-radius: 6px;
+          letter-spacing: -0.02em;
         }
 
         .nav-links {
           display: flex;
-          gap: 2rem;
+          gap: 2.5rem;
           align-items: center;
           font-size: 0.95rem;
+          font-weight: 500;
           color: var(--text-secondary);
         }
 
-        .nav-links a:hover, .nav-dropdown:hover {
-          color: var(--primary-color);
+        .nav-links a {
+          transition: color 0.3s;
         }
 
-        .nav-dropdown {
-          cursor: pointer;
+        .nav-links a:hover {
+          color: #000;
         }
 
         .btn-nav {
+          background: #000;
+          color: #fff;
           padding: 0.6rem 1.5rem;
+          border-radius: 100px;
           font-size: 0.9rem;
+          font-weight: 600;
+          transition: transform 0.3s;
         }
 
-        .arrow {
-          margin-left: 0.25rem;
+        .btn-nav:hover {
+          transform: scale(1.05);
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 768px) {
           .nav-links {
             display: none;
           }

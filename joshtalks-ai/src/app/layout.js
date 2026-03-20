@@ -1,9 +1,10 @@
 import Navbar from "./components/Navbar";
+import ParticleBackground from "./components/ParticleBackground";
 import "./globals.css";
 
 export const metadata = {
-  title: "Village Image Collection MVP",
-  description: "A fast, scalable system to collect image + description pairs tied to districts across India for AI model training.",
+  title: "Estrax — Data for Next-Gen AI",
+  description: "A premium data collection platform for regional AI model training.",
 };
 
 export const viewport = {
@@ -19,12 +20,12 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
       <body suppressHydrationWarning>
-        <div className="glow-backdrop"></div>
+        <ParticleBackground />
         <Navbar />
-        <main className="main-content">{children}</main>
+        <main>{children}</main>
       </body>
     </html>
   );

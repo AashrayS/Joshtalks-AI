@@ -1,37 +1,70 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import './home.css';
 
 export default function Home() {
-  const [activeMode, setActiveMode] = useState('contributor'); // 'contributor' or 'admin'
+  const [activeMode, setActiveMode] = useState('contributor');
+  const [typewriterText, setTypewriterText] = useState('');
+  const fullText = "Experience liftoff with India's Next-Gen Data";
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setTypewriterText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) clearInterval(interval);
+    }, 5000 / fullText.length); // 5 seconds for full text
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="home-container animate-fade-in">
-      {/* Particle Background */}
-      <div className="particle-container">
-        <div className="particle-burst"></div>
-      </div>
-
+    <div className="home-container">
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-logo animate-fade-in">
-          <div className="logo-symbol small">A</div>
-          <span>Village Data Collection</span>
-        </div>
+        <div className="brand-badge animate-fade-in">Estrax Platform</div>
         
-        <h1>
-          Experience liftoff with <br />
-          India&apos;s Next-Gen Data
+        <h1 className="typewriter-h1">
+          {typewriterText}
+          <span className="typewriter-cursor"></span>
         </h1>
-        <p>
-          Collecting high-quality image + description pairs from rural India <br />
-          to train the next generation of regional AI models.
+        
+        <p className="hero-subtext animate-fade-in">
+          Estrax is our agentic data platform, evolving regional intelligence <br />
+          into the agent-first era.
         </p>
 
-        {/* Mode Toggle */}
-        <div className="mode-toggle-container">
+        <div className="btn-group animate-fade-in">
+          <Link href="/submit" className="btn-primary">
+            Start Contributing
+          </Link>
+          <Link href="#solutions" className="btn-secondary">
+            Explore use cases
+          </Link>
+        </div>
+      </section>
+
+      {/* Icon Curve Section (Image 1 inspiraton) */}
+      <section className="icon-curve-section animate-fade-in">
+        <div className="icon-curve-container">
+          <div className="icon-bubble"><span className="symbol">✓</span></div>
+          <div className="icon-bubble"><span className="symbol">⁝</span></div>
+          <div className="icon-bubble"><span className="symbol">❏</span></div>
+          <div className="icon-bubble"><span className="symbol">⚬</span></div>
+          <div className="icon-bubble active"><span className="symbol">立方</span></div>
+          <div className="icon-bubble"><span className="symbol">↻</span></div>
+          <div className="icon-bubble"><span className="symbol">▣</span></div>
+        </div>
+        <div className="section-text centered">
+          <h2>An AI-First Ecosystem</h2>
+          <p>Designed for high-fidelity regional data harvesting.</p>
+        </div>
+      </section>
+
+      {/* Mode Toggle */}
+      <section className="mode-section container">
+        <div className="mode-toggle-wrapper">
           <div className="mode-toggle">
             <button 
               className={activeMode === 'contributor' ? 'active' : ''} 
@@ -49,71 +82,56 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Dynamic CTA */}
-        <div className="cta-wrapper animate-fade-in" key={activeMode}>
-          {activeMode === 'contributor' ? (
-            <div className="mode-content">
-              <h3>Bridge the regional AI gap</h3>
-              <div className="btn-group">
-                <Link href="/submit" className="btn-primary">
-                  Start Contributing
-                </Link>
-                <Link href="#cases" className="btn-secondary">
-                  Learn more
-                </Link>
+        <div className="mode-display animate-fade-in" key={activeMode}>
+          <div className="card mode-card glass-card">
+            {activeMode === 'contributor' ? (
+              <div className="mode-content">
+                <h2>Join the rural data revolution</h2>
+                <p>Help us bridge the regional AI gap by contributing high-quality imagery from your village.</p>
+                <Link href="/submit" className="btn-primary">Get Started</Link>
               </div>
-            </div>
-          ) : (
-            <div className="mode-content">
-              <h3>Validate ground-truth data</h3>
-              <div className="btn-group">
-                <Link href="/admin" className="btn-primary">
-                  Access Dashboard
-                </Link>
-                <Link href="#metrics" className="btn-secondary">
-                  View Metrics
-                </Link>
+            ) : (
+              <div className="mode-content">
+                <h2>Validation at scale</h2>
+                <p>Review and validate ground-truth data with our advanced administrative dashboard.</p>
+                <Link href="/admin" className="btn-primary">Open Dashboard</Link>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </section>
 
-      {/* Feature Section inspired by Image 3 */}
-      <section className="features-grid container">
-        <div className="feature-card glass-card">
-          <div className="feature-text">
-            <h2>Data Accuracy First</h2>
-            <p>Every submission is tagged with precise district metadata and GPS coordinates for model reliability.</p>
-          </div>
-          <div className="feature-visual code-preview">
-            <div className="glow-circle red"></div>
-            <pre>
-              <code>{`{
-  "state": "Bihar",
-  "district": "Madhubani",
-  "gps": [26.34, 86.07],
-  "verified": true
+      {/* Editor Preview Section (Image 2 inspiration) */}
+      <section className="editor-preview-section container">
+        <div className="editor-glow-container">
+          <div className="glow glow-red"></div>
+          <div className="glow glow-blue"></div>
+          <div className="editor-window glass-card">
+            <div className="editor-header">
+              <div className="editor-dots"><span></span><span></span><span></span></div>
+              <div className="editor-tab">Implementation_plan.md</div>
+            </div>
+            <div className="editor-content">
+              <pre>
+                <code>{`// Estrax Data Protocol v1.0
+import { Collector } from "@estrax/core";
+
+export default function DataNode() {
+  const data = Collector.useRegion("Bihar");
+  
+  return (
+    <div className="rounded-md bg-orange-500 p-4">
+      Regional Intelligence Active
+    </div>
+  );
 }`}</code>
-            </pre>
-          </div>
-        </div>
-        
-        <div className="feature-card glass-card reverse">
-          <div className="feature-text">
-            <h2>Seamless Review</h2>
-            <p>Admin tools built for scale. Approve, reject, or request changes with one click from our dashboard.</p>
-          </div>
-          <div className="feature-visual dashboard-preview">
-            <div className="glow-circle blue"></div>
-            <div className="mock-ui">
-              <div className="bar"></div>
-              <div className="bar short"></div>
-              <div className="dots">
-                <span></span><span></span><span></span>
-              </div>
+              </pre>
             </div>
           </div>
+        </div>
+        <div className="section-text">
+          <h2>Precision Core</h2>
+          <p>Estrax offers tab autocompletion, natural language commands, and a context-aware configurable agent.</p>
         </div>
       </section>
     </div>

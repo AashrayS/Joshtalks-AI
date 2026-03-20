@@ -117,8 +117,8 @@ export default function SubmitPage() {
   return (
     <div className="container animate-fade-in">
       <div className="header">
-        <h1>Village Image Collection</h1>
-        <p>Help us train AI models with authentic rural imagery.</p>
+        <h1>Estrax Collection</h1>
+        <p>Providing high-fidelity data for regional AI intelligence.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="submission-form">

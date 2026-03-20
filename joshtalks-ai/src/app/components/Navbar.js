@@ -49,9 +49,9 @@ export default function Navbar() {
         </Link>
         
         <div className="nav-links">
-          <Link href="#platform">Platform</Link>
-          <Link href="#solutions">Solutions</Link>
-          <Link href="#company">Company</Link>
+          <Link href="/#platform">Platform</Link>
+          <Link href="/#solutions">Solutions</Link>
+          <Link href="/#company">Company</Link>
         </div>
         
         <Link href="/submit" className="btn-nav">

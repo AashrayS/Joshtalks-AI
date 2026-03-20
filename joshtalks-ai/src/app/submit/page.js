@@ -349,7 +349,8 @@ export default function SubmitPage() {
               <div className="alert-icon">⚠️</div>
               <div className="alert-content">
                 <h3>Low Fidelity Detected</h3>
-                <p>The system detected: {scanResult.issues.join(', ')}. Please capture a clearer, more original image to proceed.</p>
+                <p>The system detected: {scanResult.issues.join(', ')}.</p>
+                <div className="alert-action">💡 <strong>Action:</strong> Ensure you are in a well-lit area and capture the object directly without zoom.</div>
               </div>
             </div>
           )}

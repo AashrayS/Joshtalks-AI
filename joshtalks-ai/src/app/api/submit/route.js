@@ -11,6 +11,7 @@ export async function POST(request) {
     const district = formData.get('district');
     const gps_lat = formData.get('gps_lat');
     const gps_lng = formData.get('gps_lng');
+    const remote_reason = formData.get('remote_reason');
 
     if (!image || !description || !state || !district) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -46,6 +47,7 @@ export async function POST(request) {
           district,
           gps_lat: gps_lat ? parseFloat(gps_lat) : null,
           gps_lng: gps_lng ? parseFloat(gps_lng) : null,
+          remote_reason: remote_reason || null,
           status: 'pending'
         }
       ])

@@ -164,4 +164,43 @@ select, textarea { width: 100% !important; background: #fbfbfd; border: 1px soli
     font-weight: 800;
   }
 } /* End mobile media query */
+
+.btn-remote-toggle {
+  width: 50px;
+  height: 50px;
+  background: #fbfbfd;
+  border: 1px dashed #27ae60;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-remote-toggle:hover {
+  background: #f1f8f4;
+  transform: scale(1.05);
+}
+
+.remote-reason-input {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f1f8f4;
+  border: 1px solid rgba(39, 174, 96, 0.2);
+  border-radius: 14px;
+}
+
+.remote-reason-input label {
+  color: #27ae60 !important;
+  margin-bottom: 0.8rem;
+}
+
+.remote-input {
+  flex: 1;
+  border-color: rgba(39, 174, 96, 0.3) !important;
+}
+
+.btn-verify:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 } /* End .submit-page-root */

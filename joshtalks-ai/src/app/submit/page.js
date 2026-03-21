@@ -27,6 +27,7 @@ export default function SubmitPage() {
     gps_lng: null,
     remote_reason: ''
   });
+  const [isRemote, setIsRemote] = useState(false);
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -289,16 +290,62 @@ export default function SubmitPage() {
                     {locationVerified ? '✓' : '📍'}
                   </button>
                 )}
+                {(gpsStatus === 'error' || gpsStatus === 'searching') && !locationVerified && (
+                  <button 
+                    type="button" 
+                    className="btn-remote-toggle"
+                    onClick={() => setIsRemote(true)}
+                    title="Use Remote Mode"
+                  >
+                    📡?
+                  </button>
+                )}
               </div>
             </div>
           </div>
 
+          {isRemote && !locationVerified && (
+            <div className="remote-reason-input animate-fade-in">
+              <label>Reason for Remote Submission</label>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <input 
+                  type="text" 
+                  placeholder="e.g. Indoor location, Poor GPS reception..." 
+                  value={formData.remote_reason} 
+                  onChange={(e) => setFormData({...formData, remote_reason: e.target.value})}
+                  className="remote-input"
+                />
+                <button 
+                  type="button" 
+                  className="btn-verify"
+                  onClick={() => {
+                    if (formData.remote_reason.length > 5) {
+                      setLocationVerified(true);
+                      setError('');
+                    } else {
+                      setError('Please provide a valid reason (min 5 chars).');
+                    }
+                  }}
+                  disabled={formData.remote_reason.length <= 5}
+                >
+                  Verify
+                </button>
+              </div>
+            </div>
+          )}
+
           {locationVerified && (
             <div className="location-info animate-fade-in">
-              <p>📍 Location Locked: <code>{formData.gps_lat?.toFixed(4)}, {formData.gps_lng?.toFixed(4)}</code></p>
-              <a href={`https://www.google.com/maps?q=${formData.gps_lat},${formData.gps_lng}`} target="_blank" rel="noopener noreferrer" className="maps-link">
-                Confirm on Satellite View →
-              </a>
+              {isRemote ? (
+                <p>🛰️ Remote Mode Active: <code>{formData.remote_reason}</code></p>
+              ) : (
+                <>
+                  <p>📍 Location Locked: <code>{formData.gps_lat?.toFixed(4)}, {formData.gps_lng?.toFixed(4)}</code></p>
+                  <a href={`https://www.google.com/maps?q=${formData.gps_lat},${formData.gps_lng}`} target="_blank" rel="noopener noreferrer" className="maps-link">
+                    Confirm on Satellite View →
+                  </a>
+                </>
+              )}
             </div>
           )}
 
@@ -361,7 +408,7 @@ export default function SubmitPage() {
             <div className="protocol-items">
               <label className={`protocol-item ${protocol.clarity ? 'checked' : ''}`}><input type="checkbox" checked={protocol.clarity} onChange={() => setProtocol({...protocol, clarity: !protocol.clarity})} /> Image Clarity Verified</label>
               <label className={`protocol-item ${protocol.privacy ? 'checked' : ''}`}><input type="checkbox" checked={protocol.privacy} onChange={() => setProtocol({...protocol, privacy: !protocol.privacy})} /> Privacy Safegards (No PII)</label>
-              <label className={`protocol-item ${protocol.gpsMatch ? 'checked' : ''}`}><input type="checkbox" checked={protocol.gpsMatch} disabled={!locationVerified} onChange={() => setProtocol({...protocol, gpsMatch: !protocol.gpsMatch})} /> GPS Matches {formData.district || 'District'}</label>
+              <label className={`protocol-item ${protocol.gpsMatch ? 'checked' : ''}`}><input type="checkbox" checked={protocol.gpsMatch} disabled={!locationVerified} onChange={() => setProtocol({...protocol, gpsMatch: !protocol.gpsMatch})} /> {isRemote ? 'Manual District Verification' : `GPS Matches ${formData.district || 'District'}`}</label>
               <label className={`protocol-item ${protocol.terms ? 'checked' : ''}`}><input type="checkbox" checked={protocol.terms} onChange={() => setProtocol({...protocol, terms: !protocol.terms})} /> Data Ethics Agreement</label>
             </div>
           </div>

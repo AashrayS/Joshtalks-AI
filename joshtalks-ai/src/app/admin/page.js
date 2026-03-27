@@ -89,15 +89,23 @@ export default function AdminPage() {
       <div className="login-container animate-fade-in">
         <div className="login-card">
           <h1>Admin Access</h1>
-          <p>Provide secure credentials to enter Estrax Console.</p>
+          <p>Provide secure credentials to enter the Estrax Control Console.</p>
           <input 
             type="password" 
             placeholder="Reviewer Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && setIsAuthenticated(true)}
+            autoFocus
           />
-          <button className="btn-primary" onClick={() => setIsAuthenticated(true)}>Enter Dashboard</button>
+          <button className="btn-primary" onClick={() => setIsAuthenticated(true)}>
+            Enter Dashboard
+          </button>
+          
+          <div className="dev-credentials">
+            Testing Credentials
+            <strong>joshtalks-admin-2026</strong>
+          </div>
         </div>
       </div>
     );

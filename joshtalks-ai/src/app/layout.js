@@ -1,7 +1,9 @@
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ParticleBackground from "./components/ParticleBackground";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+
 
 export const metadata = {
   title: "Estrax — Data for Next-Gen AI",
@@ -28,7 +30,9 @@ export default function RootLayout({ children }) {
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <Analytics />
       </body>
+
     </html>
   );
 }
